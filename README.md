@@ -1,5 +1,5 @@
 # Database-Alumni-Tracker
 
-Inspiration:
-https://alumnitracerlpucavite.net/
+Inspiration: <br>
+https://alumnitracerlpucavite.net/ <br>
 https://vle2.upb.edu.ph/my/
