@@ -48,7 +48,8 @@ img.logo {
 }
 
 .header-tabs a:hover {
-    background-color: #5E1A2C;
+    background-color: #f4a126;
+    color: #8D1436;
 }
 
 .header-right-text {
@@ -61,6 +62,16 @@ img.logo {
 
 .header-right-text p {
     margin: 0;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #8D1436;
+    padding: 10px 20px;
+    bottom: 0;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 500px) {
