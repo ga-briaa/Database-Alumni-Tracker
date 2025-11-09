@@ -3,10 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php include '../src/templates/head.php'; ?>
         <title>DU - Survey</title>
-        <link rel="icon" type="image/x-icon" href="assets/DU-Logo.png">
-        <link rel="stylesheet" href="css/global.css">
     </head>
 
     <body>
@@ -17,5 +15,8 @@
             survey </br>
             this is where users can input their data to be added to the database.
         </p>
+
+        <!-- Footer -->
+        <?php include '../src/templates/footer.php'; ?>
     </body>
 </html>

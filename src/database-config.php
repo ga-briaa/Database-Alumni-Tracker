@@ -1,5 +1,8 @@
 <!--Connect to the database-->
 <?php
+    // Define base URL
+    define('BASE_URL', '/projects/Database-Alumni-Tracker/public/');
+
     // Initialize value of Database
     $serverName = "localhost";
     $username = "root";

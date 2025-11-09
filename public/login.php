@@ -3,10 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php include '../src/templates/head.php'; ?>
         <title>DU - Login</title>
-        <link rel="icon" type="image/x-icon" href="assets/DU-Logo.png">
-        <link rel="stylesheet" href="css/global.css">
     </head>
 
     <body>
