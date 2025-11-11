@@ -12,24 +12,27 @@
     align-self: flex-start;
 }
 
-.myBtn {
+.btn-selectors {
+    display: flex;
+    gap: 1rem; /* 16px */
+    width: 100%;
+}
+
+.btn-modal-trigger {
     background-color: #8D1436;
     color: #FFFFFF;
-
     font-family: 'Lexend';
     font-size: 18px;
     font-weight: bold;
     text-align: center;
-    
     padding: 12px 24px;
     border-radius: 4px;
-
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.myBtn:hover {
+.btn-modal-trigger:hover {
     background-color: #f4a126;
     color: #8D1436;
 }
