@@ -13,40 +13,72 @@
         <?php include '../../src/templates/header.php'; ?>
 
         <div class="card-container">
-            <div class="select-table">
-                <button class="myBtn" id="myBtn">Select Table</button>
-
-                <div class="modal" id="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2>Select Table</h2>
-                            <span class="close">&times;</span>
-                        </div>
-                        <div class="modal-body">
-                            <form id="table-select-form" action="" method="GET">
-                                <p>Select Database</p>
-
-                                <div class="radio-options">
-                                    <div class="radio-option-item">
-                                        <input type="radio" id="alumni-info" name="view-table" value="alumni-info">
-                                        <label for="alumni-info">Alumni Information</label><br>
+            <div class="btn-selectors">
+                <div class="select-table">
+                    <button class="btn-modal-trigger" data-target="selectModal">Select Table</button>
+    
+                    <div class="modal" id="selectModal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Select Table</h2>
+                                <span class="close">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <form id="table-select-form" action="" method="GET">
+                                    <p>Select Database</p>
+    
+                                    <div class="radio-options">
+                                        <div class="radio-option-item">
+                                            <input type="radio" id="alumni-info" name="view-table" value="alumni-info">
+                                            <label for="alumni-info">Alumni Information</label><br>
+                                        </div>
+                                        <div class="radio-option-item">
+                                            <input type="radio" id="alumni-courses" name="view-table" value="alumni-courses">
+                                            <label for="alumni-courses">Alumni's Courses</label>
+                                        </div>
+                                        <div class="radio-option-item">
+                                            <input type="radio" id="alumni-employment" name="view-table" value="alumni-employment">
+                                            <label for="alumni-employment">Alumni's Employment</label><br>
+                                        </div>
                                     </div>
-                                    <div class="radio-option-item">
-                                        <input type="radio" id="alumni-courses" name="view-table" value="alumni-courses">
-                                        <label for="alumni-courses">Alumni's Courses</label>
-                                    </div>
-                                    <div class="radio-option-item">
-                                        <input type="radio" id="alumni-employment" name="view-table" value="alumni-employment">
-                                        <label for="alumni-employment">Alumni's Employment</label><br>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="apply-btn" type="submit" form="table-select-form">Apply</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn-apply" type="submit" form="table-select-form">Apply</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+    
+                
+                <?php
+                // Button for filtering table only shows when a table is selected
+                if(isset($_GET['view-table'])) {
+                    echo "
+                    <div class='filter-table'>
+                        <button class='btn-modal-trigger' data-target='filterModal'>Filter Table</button>
+        
+                        <div class='modal' id='filterModal'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h2>Filter Table</h2>
+                                    <span class='close'>&times;</span>
+                                </div>
+                                <div class='modal-body'>
+                                    <form id='table-filter-form' action='' method='GET'>
+                                        <p>Filter Database</p>
+                                        <!-- Filter options can be added here -->
+                                    </form>
+                                </div>
+                                <div class='modal-footer'>
+                                    <button class='btn-apply' type='submit' form='table-filter-form'>Apply</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        ";
+                    }
+                    ?>
             </div>
 
             <div class="table-display">

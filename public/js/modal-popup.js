@@ -1,17 +1,30 @@
-var modal = document.getElementById("modal");
-var btn = document.getElementById("myBtn");
-var span = document.getElementsByClassName("close")[0];
+document.addEventListener("DOMContentLoaded", function() {
+  const modalTriggers = document.querySelectorAll(".btn-modal-trigger");
+  const closeModal = document.querySelectorAll(".close");
 
-btn.onclick = function() {
-  modal.style.display = "flex";
-}
+  modalTriggers.forEach(button => {
+    button.onclick = function() {
+      const modalId = button.getAttribute("data-target");
+      const modal = document.getElementById(modalId);
 
-span.onclick = function() {
-  modal.style.display = "none";
-}
+      if (modal) {
+        modal.style.display = "flex";
+      }
+    } 
+  });
 
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  closeModal.forEach(button => {
+    button.onclick = function() {
+      const modal = button.closest(".modal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    }
+  });
+
+  window.onclick = function(event) {
+    if (event.target.classList.contains("modal")) {
+      event.target.style.display = "none";
+    }
   }
-}
+});
