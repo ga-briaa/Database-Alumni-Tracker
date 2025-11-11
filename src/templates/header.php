@@ -1,6 +1,6 @@
 <!-- Header Template -->
 <header class="header">
-    <a href="index.php">
+    <a href="<?php echo BASE_URL; ?>index.php">
         <img src="<?php echo BASE_URL; ?>assets/DU-Logo-with-text.png" alt="Database University" class="header-logo">
     </a>
     <div class="header-tabs">

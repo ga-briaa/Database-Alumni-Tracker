@@ -15,7 +15,4 @@
     if ($conn->connect_error) {
         die("Connection Error." . $conn->connect_error);
     }
-
-    // Close connection to database
-    $conn->close();
 ?>

@@ -5,7 +5,7 @@
     <head>
         <?php include '../src/templates/head.php'; ?>
         <title>DU - Alumni Tracker</title>
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/index.css">
     </head>
 
     <body>
@@ -29,12 +29,12 @@
             <!-- Section Card: Database (accessible to admin only) -->
             <div class="section-card">
                 <header>
-                    <h1>View Database</h1>
+                    <h1>Manage Database</h1>
                 </header>
     
                 <div>
-                    <p>View alumni, courses, status, jobs, and more.</p>
-                    <a href="<?php echo BASE_URL; ?>admin/database-view.php">Go to Database View</a>
+                    <p>Manage alumni, courses, status, and employment information.</p>
+                    <a href="<?php echo BASE_URL; ?>admin/database-manage.php">Go to Manage Database</a>
                 </div>
             </div>
         </div>
