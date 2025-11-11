@@ -34,6 +34,9 @@
     if($result->num_rows > 0) {
         echo "<table>
         <tr>
+            <th colspan='4' class='table-header'>Alumni Information</th>
+        </tr>
+        <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>

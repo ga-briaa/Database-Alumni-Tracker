@@ -64,6 +64,7 @@
                         include 'tables/alum-employment-view.php';
                     }
 
+                    // Pagination Links
                     if (isset($totalPages) && $totalPages > 1) {
                         echo '<div class="pagination">';
                         

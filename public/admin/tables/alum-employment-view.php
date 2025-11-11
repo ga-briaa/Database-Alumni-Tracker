@@ -40,6 +40,9 @@
     if($result->num_rows > 0) {
         echo "<table>
         <tr>
+            <th colspan='6' class='table-header'>Alumni Employment</th>
+        </tr>
+        <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Position</th>
