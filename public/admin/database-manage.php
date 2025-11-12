@@ -33,13 +33,11 @@ if ($status_result->num_rows > 0) {
                     <div class="modal" id="selectModal">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h2>Select Table</h2>
+                                <h2>Select Database</h2>
                                 <span class="close">&times;</span>
                             </div>
                             <div class="modal-body">
                                 <form id="table-select-form" action="" method="GET">
-                                    <p>Select Database</p>
-    
                                     <div class="radio-options">
                                         <div class="radio-option-item">
                                             <input type="radio" id="alumni-info" name="view-table" value="alumni-info">
@@ -67,7 +65,7 @@ if ($status_result->num_rows > 0) {
                 <?php
                 // Button for filtering table only shows when a table is selected
                 if(isset($_GET['view-table'])) {
-                    echo "
+                ?>
                     <div class='filter-table'>
                         <button class='myBtn btn-modal-trigger' data-target='filterModal'>Filter Table</button>
         
@@ -79,8 +77,12 @@ if ($status_result->num_rows > 0) {
                                 </div>
                                 <div class='modal-body'>
                                     <form id='table-filter-form' action='' method='GET'>
-                                        <p>Filter Database</p>
-                                        <!-- Filter options can be added here -->
+                                        <input type='hidden' name='view-table' value='<?php echo htmlspecialchars($_GET['view-table']); ?>'>
+
+                                        <label for='search'>Search for keyword:</label>
+                                        <input type='text' id='filter-search-box' name='search'
+                                            placeholder='Enter keyword... (e.g., Maria, Employed)'
+                                            maxlength='100'>
                                     </form>
                                 </div>
                                 <div class='modal-footer'>
@@ -89,60 +91,57 @@ if ($status_result->num_rows > 0) {
                                 </div>
                             </div>
                         </div>
-                        ";
-                    }
-                    ?>
 
-                <div class="add-data">
-                    <button class="myBtn btn-modal-trigger" data-target="addModal">+ Add Data</button>
-
-                    <div class="modal" id="addModal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2>Add New Alumni</h2>
-                                <span class="close">&times;</span>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal'>+ Add Data</button>
+        
+                            <div class='modal' id='addModal'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Add New Alumni</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+                                    <form id='add-form' action='<?php echo BASE_URL; ?>admin/data/add-alum-info.php' method='POST'>
+                                        <div class='modal-body'>
+        
+                                            <label for='add-alum-id'>ID:</label>
+                                            <input type='text' id='add-alum-id' name='alum-id'
+                                                required
+                                                pattern='\d{4}-\d{5}'
+                                                title='ID must be in the format NNNN-NNNNN (e.g., 2025-12345)'>
+        
+                                            <label for='add-alum-firstName'>First Name:</label>
+                                            <input type='text' id='add-alum-firstName' name='alum-firstName'
+                                                required maxlength='50'>
+        
+                                            <label for='add-alum-lastName'>Last Name:</label>
+                                            <input type='text' id='add-alum-lastName' name='alum-lastName'
+                                                required maxlength='50'>
+        
+                                            <label for='add-alum-contactInfo'>Email:</label>
+                                            <input type='email' id='add-alum-contactInfo' name='alum-contactInfo'
+                                                required maxlength='100'>
+        
+                                            <label for='add-alum-status'>Status:</label>
+                                            <select id='add-alum-status' name='alum-status'>
+                                                <?php
+                                                foreach ($all_statuses as $status) {
+                                                    echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" 
+                                                        . htmlspecialchars($status['Status_Name']) 
+                                                        . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+        
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="add-form">Add Alumni</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <form id="add-form" action="<?php echo BASE_URL; ?>admin/data/add-alum-info.php" method="POST">
-                                <div class="modal-body">
-
-                                    <label for="add-alum-id">ID:</label>
-                                    <input type="text" id="add-alum-id" name="alum-id"
-                                        required
-                                        pattern="\d{4}-\d{5}"
-                                        title="ID must be in the format NNNN-NNNNN (e.g., 2025-12345)">
-
-                                    <label for="add-alum-firstName">First Name:</label>
-                                    <input type="text" id="add-alum-firstName" name="alum-firstName"
-                                        required maxlength="50">
-
-                                    <label for="add-alum-lastName">Last Name:</label>
-                                    <input type="text" id="add-alum-lastName" name="alum-lastName"
-                                        required maxlength="50">
-
-                                    <label for="add-alum-contactInfo">Email:</label>
-                                    <input type="email" id="add-alum-contactInfo" name="alum-contactInfo"
-                                        required maxlength="100">
-
-                                    <label for="add-alum-status">Status:</label>
-                                    <select id="add-alum-status" name="alum-status">
-                                        <?php
-                                        // This works now because $all_statuses is global
-                                        foreach ($all_statuses as $status) {
-                                            echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" 
-                                                . htmlspecialchars($status['Status_Name']) 
-                                                . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn-apply" type="submit" form="add-form">Add Alumni</button>
-                                </div>
-                            </form>
                         </div>
-                    </div>
-                </div>
+                    <?php } ?>
             </div>
 
             <div class="table-display">
@@ -167,22 +166,21 @@ if ($status_result->num_rows > 0) {
                         // Previous Button
                         if ($currentPage > 1) {
                             $prevPage = $currentPage - 1;
-                            echo "<a href='?view-table=$selected_table&page=$prevPage'>&lt;</a>";
+                            echo "<a href='?view-table=$selected_table&page=$prevPage&sort=$sort_column_key&order=$sort_order&search=$search_term'>&lt;</a>";
                         }
 
                         // Page Number Links
                         for ($i = 1; $i <= $totalPages; $i++) {
                             // Check if $i is the current page
                             $activeClass = ($i == $currentPage) ? 'class="active"' : '';
-                            echo "<a href='?view-table=$selected_table&page=$i' $activeClass>$i</a>";
+                            echo "<a href='?view-table=$selected_table&page=$i&sort=$sort_column_key&order=$sort_order&search=$search_term' $activeClass>$i</a>";
                         }
 
                         // Next Button
                         if ($currentPage < $totalPages) {
                             $nextPage = $currentPage + 1;
-                            echo "<a href='?view-table=$selected_table&page=$nextPage'>&gt;</a>";
+                            echo "<a href='?view-table=$selected_table&page=$nextPage&sort=$sort_column_key&order=$sort_order&search=$search_term'>&gt;</a>";
                         }
-
                         echo '</div>';
                     }
                 } else {

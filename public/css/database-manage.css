@@ -137,7 +137,8 @@
 }
 
 #editModal .modal-body label,
-#addModal .modal-body label {
+#addModal .modal-body label,
+#filterModal .modal-body label {
     text-align: right;
 }
 
@@ -146,7 +147,8 @@
 #editModal .modal-body select,
 #addModal .modal-body input[type="text"],
 #addModal .modal-body input[type="email"],
-#addModal .modal-body select {
+#addModal .modal-body select,
+#filterModal .modal-body input[type="text"]{
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #ccc;
@@ -254,8 +256,30 @@
 
 .table-display p {
     text-align: center;
-    /* padding: 3.5rem 1.5rem;  */
-    /* margin: 0; */
+}
+
+.table-display th a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.table-display th a.active-sort {
+    font-weight: bold;
+    color: #333;
+}
+
+.table-display th a.active-sort::after {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.table-display th a.active-sort.ASC::after {
+    content: '▲';
+}
+
+.table-display th a.active-sort.DESC::after {
+    content: '▼';
 }
 
 .table-display table {
