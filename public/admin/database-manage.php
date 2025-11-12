@@ -1,4 +1,17 @@
-<?php include '../../src/database-config.php'; ?>
+<?php
+include '../../src/database-config.php';
+
+// Fetch all statuses for the dropdown
+$status_sql = "SELECT Status_ID, Status_Name FROM status ORDER BY Status_Name";
+$status_result = $conn->query($status_sql);
+$all_statuses = [];
+if ($status_result->num_rows > 0) {
+    while($status_row = $status_result->fetch_assoc()) {
+        $all_statuses[] = $status_row;
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +28,7 @@
         <div class="card-container">
             <div class="btn-selectors">
                 <div class="select-table">
-                    <button class="btn-modal-trigger" data-target="selectModal">Select Table</button>
+                    <button class="myBtn btn-modal-trigger" data-target="selectModal">Select Table</button>
     
                     <div class="modal" id="selectModal">
                         <div class="modal-content">
@@ -56,7 +69,7 @@
                 if(isset($_GET['view-table'])) {
                     echo "
                     <div class='filter-table'>
-                        <button class='btn-modal-trigger' data-target='filterModal'>Filter Table</button>
+                        <button class='myBtn btn-modal-trigger' data-target='filterModal'>Filter Table</button>
         
                         <div class='modal' id='filterModal'>
                             <div class='modal-content'>
@@ -79,6 +92,57 @@
                         ";
                     }
                     ?>
+
+                <div class="add-data">
+                    <button class="myBtn btn-modal-trigger" data-target="addModal">+ Add Data</button>
+
+                    <div class="modal" id="addModal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Add New Alumni</h2>
+                                <span class="close">&times;</span>
+                            </div>
+                            <form id="add-form" action="<?php echo BASE_URL; ?>admin/data/add-alum-info.php" method="POST">
+                                <div class="modal-body">
+
+                                    <label for="add-alum-id">ID:</label>
+                                    <input type="text" id="add-alum-id" name="alum-id"
+                                        required
+                                        pattern="\d{4}-\d{5}"
+                                        title="ID must be in the format NNNN-NNNNN (e.g., 2025-12345)">
+
+                                    <label for="add-alum-firstName">First Name:</label>
+                                    <input type="text" id="add-alum-firstName" name="alum-firstName"
+                                        required maxlength="50">
+
+                                    <label for="add-alum-lastName">Last Name:</label>
+                                    <input type="text" id="add-alum-lastName" name="alum-lastName"
+                                        required maxlength="50">
+
+                                    <label for="add-alum-contactInfo">Email:</label>
+                                    <input type="email" id="add-alum-contactInfo" name="alum-contactInfo"
+                                        required maxlength="100">
+
+                                    <label for="add-alum-status">Status:</label>
+                                    <select id="add-alum-status" name="alum-status">
+                                        <?php
+                                        // This works now because $all_statuses is global
+                                        foreach ($all_statuses as $status) {
+                                            echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" 
+                                                . htmlspecialchars($status['Status_Name']) 
+                                                . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn-apply" type="submit" form="add-form">Add Alumni</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="table-display">

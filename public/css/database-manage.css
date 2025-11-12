@@ -12,13 +12,17 @@
     align-self: flex-start;
 }
 
+.add-data {
+    margin-left: auto;
+}
+
 .btn-selectors {
     display: flex;
     gap: 1rem; /* 16px */
     width: 100%;
 }
 
-.btn-modal-trigger {
+.myBtn {
     background-color: #8D1436;
     color: #FFFFFF;
     font-family: 'Lexend';
@@ -32,9 +36,41 @@
     transition: background-color 0.3s ease;
 }
 
-.btn-modal-trigger:hover {
+.myBtn:hover {
     background-color: #f4a126;
     color: #8D1436;
+}
+
+.manage-icon-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-icon img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.btn-icon .img-hover {
+    display: none;
+}
+
+.btn-icon:hover .img-default {
+    display: none;
+}
+
+.btn-icon:hover .img-hover {
+    display: block;
 }
 
 .modal {
@@ -90,6 +126,48 @@
     margin-top: 0;
     margin-bottom: 16px;
     color: #333;
+}
+
+#editModal .modal-body form,
+#addModal .modal-body form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px 20px;
+    align-items: center;
+}
+
+#editModal .modal-body label,
+#addModal .modal-body label {
+    text-align: right;
+}
+
+#editModal .modal-body input[type="text"],
+#editModal .modal-body input[type="email"],
+#editModal .modal-body select,
+#addModal .modal-body input[type="text"],
+#addModal .modal-body input[type="email"],
+#addModal .modal-body select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Lexend', sans-serif;
+    box-sizing: border-box;
+}
+
+.form-span-all {
+    grid-column: 1 / -1;
+}
+
+/* CSS for hidden Alum ID */
+#editModal .modal-body label[for="edit-alum-id"] {
+    grid-column: 1 / -1;
+    text-align: left;
+    margin-bottom: -10px;
+}
+#editModal .modal-body input#edit-alum-id {
+    grid-column: 1 / -1;
 }
 
 .radio-options {
