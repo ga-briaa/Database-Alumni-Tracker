@@ -1,7 +1,7 @@
 .card-container {
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
     gap: 2rem; /* 32px */
@@ -25,7 +25,7 @@
 .myBtn {
     background-color: #8D1436;
     color: #FFFFFF;
-    font-family: 'Lexend';
+    font-family: 'Lexend', sans-serif;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
@@ -33,7 +33,7 @@
     border-radius: 4px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .myBtn:hover {
@@ -74,30 +74,32 @@
 }
 
 .modal {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal-content {
     background-color: #fefefe;
     border: none;
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
+    max-width: 550px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     padding: 0; 
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .modal-header {
@@ -128,8 +130,14 @@
     color: #333;
 }
 
-#editModal .modal-body form,
-#addModal .modal-body form {
+#editModal .modal-body,
+#editModal-info .modal-body,
+#editModal-courses .modal-body,
+#addModal .modal-body,
+#addModal-info .modal-body,
+#addModal-courses .modal-body,
+#addModal-employment .modal-body,
+#filterModal .modal-body form {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 16px 20px;
@@ -137,7 +145,12 @@
 }
 
 #editModal .modal-body label,
+#editModal-info .modal-body label,
+#editModal-courses .modal-body label,
 #addModal .modal-body label,
+#addModal-info .modal-body label,
+#addModal-courses .modal-body label,
+#addModal-employment .modal-body label,
 #filterModal .modal-body label {
     text-align: right;
 }
@@ -145,10 +158,25 @@
 #editModal .modal-body input[type="text"],
 #editModal .modal-body input[type="email"],
 #editModal .modal-body select,
+#editModal-info .modal-body input[type="text"],
+#editModal-info .modal-body input[type="email"],
+#editModal-info .modal-body select,
+#editModal-courses .modal-body input[type="text"],
+#editModal-courses .modal-body input[type="email"],
+#editModal-courses .modal-body select,
 #addModal .modal-body input[type="text"],
 #addModal .modal-body input[type="email"],
 #addModal .modal-body select,
-#filterModal .modal-body input[type="text"]{
+#addModal-info .modal-body input[type="text"],
+#addModal-info .modal-body input[type="email"],
+#addModal-info .modal-body select,
+#addModal-courses .modal-body input[type="text"],
+#addModal-courses .modal-body input[type="email"],
+#addModal-courses .modal-body select,
+#addModal-employment .modal-body input[type="text"],
+#addModal-employment .modal-body input[type="email"],
+#addModal-employment .modal-body select,
+#filterModal .modal-body input[type="text"] {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #ccc;
@@ -156,20 +184,30 @@
     font-size: 16px;
     font-family: 'Lexend', sans-serif;
     box-sizing: border-box;
+    background-size: 12px;
+}
+
+select {
+    appearance: none; /* Remove default dropdown arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0 0h12L6 8z' fill='%238D1436'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px 8px;
+    padding-right: 30px;
+    cursor: pointer;
 }
 
 .form-span-all {
     grid-column: 1 / -1;
 }
 
-/* CSS for hidden Alum ID */
-#editModal .modal-body label[for="edit-alum-id"] {
-    grid-column: 1 / -1;
-    text-align: left;
-    margin-bottom: -10px;
-}
-#editModal .modal-body input#edit-alum-id {
-    grid-column: 1 / -1;
+#editModal .modal-body label[for="edit-alum-id"],
+#editModal-info .modal-body label[for="edit-alum-id"],
+#editModal-courses .modal-body label[for="edit-alum-id"] {
+    text-align: right;
 }
 
 .radio-options {

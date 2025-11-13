@@ -117,7 +117,7 @@ if($result->num_rows > 0) {
                 <td class='manage-icon-cell'>
         
                     <button class='btn-icon btn-modal-trigger' 
-                            data-target='editModal'
+                            data-target='editModal-info'
                             data-id='" . htmlspecialchars($row['Alum_ID']) . "'
                             data-firstName='" . htmlspecialchars($row['Alum_FirstName']) . "'
                             data-lastName='" . htmlspecialchars($row['Alum_LastName']) . "'
@@ -148,7 +148,7 @@ if($result->num_rows > 0) {
 }
 ?>
 
-<div class="modal" id="editModal">
+<div class="modal" id="editModal-info">
     <div class="modal-content">
         <div class="modal-header">
             <h2>Edit Data</h2>
@@ -188,7 +188,7 @@ if($result->num_rows > 0) {
                             . htmlspecialchars($status['Status_Name']) 
                             . "</option>";
                     }
-                ?>
+                    ?>
                 </select>
             </div>
             <div class="modal-footer">
