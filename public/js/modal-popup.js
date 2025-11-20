@@ -110,4 +110,41 @@ document.addEventListener("DOMContentLoaded", function() {
       event.target.style.display = "none";
     }
   });
+
+  // Live search: update the table-display as the user types (debounced)
+  const searchInput = document.getElementById('search-box');
+  if (searchInput) {
+    let debounceTimer = null;
+
+    const performSearch = (value) => {
+      const viewInput = document.querySelector("input[name='view-table']");
+      const view = viewInput ? viewInput.value : (document.getElementById('view-table-select') ? document.getElementById('view-table-select').value : '');
+      const params = new URLSearchParams();
+      if (view) params.set('view-table', view);
+      if (value) params.set('search', value);
+      params.set('page', '1');
+
+      const url = window.location.pathname + '?' + params.toString();
+
+      fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newTable = doc.querySelector('.table-display');
+          const currentTable = document.querySelector('.table-display');
+          if (newTable && currentTable) {
+            currentTable.innerHTML = newTable.innerHTML;
+          }
+          // Update the URL so the search can be shared/bookmarked
+          history.replaceState(null, '', url);
+        })
+        .catch(err => console.error('Live search error:', err));
+    };
+
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => performSearch(e.target.value.trim()), 300);
+    });
+  }
 });

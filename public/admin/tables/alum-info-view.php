@@ -155,37 +155,37 @@ if($result->num_rows > 0) {
             <span class="close">&times;</span>
         </div>
         <form id="edit-form" action="<?php echo BASE_URL; ?>admin/data/update-alum-info.php" method="POST">
-            <div class="modal-body">
+            <div class="modal-body modal-form-grid">
                 <input type="hidden" id="edit-alum-old-id" name="alum-old-id" value="">
                 
                 <label for="edit-alum-id">ID:</label>
                 <input type="text" id="edit-alum-id" name="alum-id" value=""
                    required
                    pattern="\d{4}-\d{5}"
-                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)">
-
+                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)" class='modal-input-field'>
+ 
                 
                 <label for="edit-alum-firstName">First Name:</label>
                 <input type="text" id="edit-alum-firstName" name="alum-firstName" value=""
                     required
-                    maxlength="30">
+                    maxlength="30" class='modal-input-field'>
                 
                 <label for="edit-alum-lastName">Last Name:</label>
                 <input type="text" id="edit-alum-lastName" name="alum-lastName" value=""
                     required
-                    maxlength="30">
+                    maxlength="30" class='modal-input-field'>
                 
                 <label for="edit-alum-contactInfo">Email:</label>
                 <input type="text" id="edit-alum-contactInfo" name="alum-contactInfo" value=""
                     required
-                    maxlength="100">
+                    maxlength="100" class='modal-input-field'>
                 
                 <label for="edit-alum-status">Status:</label>
-                <select id="edit-alum-status" name="alum-status">
+                <select id="edit-alum-status" name="alum-status" class='modal-input-field'>
                     <?php
                     foreach ($all_statuses as $status) {
-                        echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" 
-                            . htmlspecialchars($status['Status_Name']) 
+                        echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>"
+                            . htmlspecialchars($status['Status_Name'])
                             . "</option>";
                     }
                     ?>
