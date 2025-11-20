@@ -127,13 +127,13 @@ if ($alumni_result->num_rows > 0) {
                                         <form id='add-form-info' action='<?php echo BASE_URL; ?>admin/data/add-alum-info.php' method='POST'>
                                             <div class='modal-body modal-form-grid'>
                                                 <label for='add-alum-id'>ID:</label>
-                                                <input type='text' id='add-alum-id' name='alum-id' required pattern='\d{4}-\d{5}' title='ID must be in the format NNNN-NNNNN (e.g., 2025-12345)' class='modal-input-field'>
+                                                <input type='text' id='add-alum-id' name='alum-id' required pattern='^\d{4}-\d{5}$' title='ID must be in the format XXXX-XXXXX (e.g., 2025-12345)' maxlength='10' class='modal-input-field'>
                                                 <label for='add-alum-firstName'>First Name:</label>
                                                 <input type='text' id='add-alum-firstName' name='alum-firstName' required maxlength='50' class='modal-input-field'>
                                                 <label for='add-alum-lastName'>Last Name:</label>
                                                 <input type='text' id='add-alum-lastName' name='alum-lastName' required maxlength='50' class='modal-input-field'>
                                                 <label for='add-alum-contactInfo'>Email:</label>
-                                                <input type='email' id='add-alum-contactInfo' name='alum-contactInfo' required maxlength='100' class='modal-input-field'>
+                                                <input type='email' id='add-alum-contactInfo' name='alum-contactInfo' required maxlength='30' class='modal-input-field' pattern='[^@\s]+@[^@\s]+'>
                                                 <label for='add-alum-status'>Status:</label>
                                                 <select id='add-alum-status' name='alum-status' class='modal-input-field'>
                                                     <?php
@@ -336,6 +336,6 @@ if ($alumni_result->num_rows > 0) {
         <?php include '../../src/templates/footer.php'; ?>
         
         <script src="<?php echo BASE_URL; ?>js/modal-popup.js"></script>
-        
+        <script src="<?php echo BASE_URL; ?>js/alum-id-validation.js"></script>
     </body>
 </html>
