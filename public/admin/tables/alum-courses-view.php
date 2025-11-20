@@ -3,7 +3,6 @@
 
     // Columns that can be sorted
     $allowed_columns = [
-        'id' => 'alumni.Alum_ID',
         'name' => 'alumni.Alum_LastName',
         'degree' => 'graduation.Program_ID',
         'year' => 'graduation.Grad_Year'
@@ -87,19 +86,13 @@
 ?>
         <table>
                 <tr>
-                    <th colspan='5' class='table-header'>Alumni Courses</th>
+                    <th colspan='4' class='table-header'>Alumni Courses</th>
                 </tr>
                 <tr>
                     <th>
-                        <a href='<?php echo "$current_table_url&sort=id&order=" . (($sort_column_key == 'id') ? $next_order : 'ASC') . $search_url_param; ?>'
-                        class='<?php if($sort_column_key == 'id') echo "active-sort $sort_order"; ?>'>
-                        ID
-                        </a>
-                    </th>
-                    <th>
                         <a href='<?php echo "$current_table_url&sort=name&order=" . (($sort_column_key == 'name') ? $next_order : 'ASC') . $search_url_param; ?>'
                         class='<?php if($sort_column_key == 'name') echo "active-sort $sort_order"; ?>'>
-                        Name
+                        Alumni
                         </a>
                     </th>
                     <th>
@@ -119,8 +112,7 @@
         <?php
         while($row = $result->fetch_assoc()) {
             echo "<tr>
-                    <td>" . htmlspecialchars($row['Alum_ID']) . "</td>
-                    <td>" . htmlspecialchars($row['Alum_LastName']) . ", " . htmlspecialchars($row['Alum_FirstName']) . "</td>
+                    <td>" . htmlspecialchars($row['Alum_LastName']) . ", " . htmlspecialchars($row['Alum_FirstName']) . "<br><small>" . htmlspecialchars($row['Alum_ID']) . "</small></td>
                     <td>" . htmlspecialchars($row['Degree_ID']) . " " . htmlspecialchars($row['Program_Name']) . "</td>
                     <td>" . htmlspecialchars($row['Grad_Year']) . "</td>
                     <td class='manage-icon-cell'>
@@ -167,7 +159,7 @@
             <span class="close">&times;</span>
         </div>
         <form id="edit-form" action="<?php echo BASE_URL; ?>admin/data/update-alum-courses.php" method="POST">
-            <div class="modal-body">
+            <div class="modal-body modal-form-grid">
                 <input type="hidden" id="edit-alum-old-id" name="alum-old-id" value="">
                 <input type="hidden" id="edit-grad-id" name="grad-id" value="">
                 
@@ -175,47 +167,47 @@
                 <input type="text" id="edit-alum-id" name="alum-id" value=""
                    required
                    pattern="\d{4}-\d{5}"
-                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)">
-
+                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)" class='modal-input-field'>
+ 
                 
                 <label for="edit-alum-firstName">First Name:</label>
                 <input type="text" id="edit-alum-firstName" name="alum-firstName" value=""
                     required
-                    maxlength="30">
+                    maxlength="30" class='modal-input-field'>
                 
                 <label for="edit-alum-lastName">Last Name:</label>
                 <input type="text" id="edit-alum-lastName" name="alum-lastName" value=""
                     required
-                    maxlength="30">
-
+                    maxlength="30" class='modal-input-field'>
+ 
                 <label for="edit-degree-id">Degree:</label>
-                <select id="edit-degree-id" name="degree-id">
+                <select id="edit-degree-id" name="degree-id" class='modal-input-field'>
                     <?php
                     foreach ($all_degrees as $degree) {
-                        echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" 
-                            . htmlspecialchars($degree['Degree_Name']) 
+                        echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>"
+                            . htmlspecialchars($degree['Degree_Name'])
                             . "</option>";
                     }
                     ?>
                 </select>
-
+ 
                 <label for="edit-program-id">Program:</label>
-                <select id="edit-program-id" name="program-id">
+                <select id="edit-program-id" name="program-id" class='modal-input-field'>
                     <?php
                     foreach ($all_programs as $program) {
-                        echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" 
-                            . htmlspecialchars($program['Program_Name']) 
+                        echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>"
+                            . htmlspecialchars($program['Program_Name'])
                             . "</option>";
                     }
                     ?>
                 </select>
                 
                 <label for="edit-grad-year">Grad Year:</label>
-                <select id="edit-grad-year" name="grad-year" required>
+                <select id="edit-grad-year" name="grad-year" required class='modal-input-field'>
                     <?php
                     $currentYear = (int)date("Y");
                     $earliestYear = 1970; // or the earliest graduation year you want
-
+ 
                     for ($year = $currentYear; $year >= $earliestYear; $year--) {
                         echo "<option value='$year'>$year</option>";
                     }

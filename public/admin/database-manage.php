@@ -87,42 +87,16 @@ if ($alumni_result->num_rows > 0) {
 
         <div class="card-container">
             <div class="btn-selectors">
-                <!-- SELECT TABLE BUTTON -->
+                <!-- SELECT TABLE DROPDOWN -->
                 <div class="select-table">
-                    <button class="myBtn btn-modal-trigger" data-target="selectModal">Select Table</button>
-    
-                    <div class="modal" id="selectModal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2>Select Database</h2>
-                                <span class="close">&times;</span>
-                            </div>
-                            <div class="modal-body">
-                                <form id="table-select-form" action="" method="GET">
-                                    <div class="radio-options">
-                                        <div class="radio-option-item">
-                                            <input type="radio" id="alumni-info" name="view-table" value="alumni-info" 
-                                                <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-info') echo 'checked'; ?>>
-                                            <label for="alumni-info">Alumni Information</label><br>
-                                        </div>
-                                        <div class="radio-option-item">
-                                            <input type="radio" id="alumni-courses" name="view-table" value="alumni-courses"
-                                                <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-courses') echo 'checked'; ?>>
-                                            <label for="alumni-courses">Alumni's Courses</label>
-                                        </div>
-                                        <div class="radio-option-item">
-                                            <input type="radio" id="alumni-employment" name="view-table" value="alumni-employment"
-                                                <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-employment') echo 'checked'; ?>>
-                                            <label for="alumni-employment">Alumni's Employment</label><br>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn-apply" type="submit" form="table-select-form">Apply</button>
-                            </div>
-                        </div>
-                    </div>
+                    <form id="table-select-form" action="" method="GET">
+                        <label for="view-table-select">Select Table:</label>
+                        <select id="view-table-select" name="view-table" onchange="this.form.submit()">
+                            <option value="alumni-info" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-info') echo 'selected'; ?>>Alumni Information</option>
+                            <option value="alumni-courses" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-courses') echo 'selected'; ?>>Alumni's Courses</option>
+                            <option value="alumni-employment" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-employment') echo 'selected'; ?>>Alumni's Employment</option>
+                        </select>
+                    </form>
                 </div>
     
                 <!-- FILTER & ADD BUTTONS -->
@@ -130,29 +104,13 @@ if ($alumni_result->num_rows > 0) {
                 if(isset($_GET['view-table'])) {
                     $selected_table = $_GET['view-table'];
                 ?>
-                    <div class='filter-table'>
-                        <button class='myBtn btn-modal-trigger' data-target='filterModal'>Filter Table</button>
-                        <div class='modal' id='filterModal'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h2>Filter Table</h2>
-                                    <span class='close'>&times;</span>
-                                </div>
-                                <div class='modal-body'>
-                                    <form id='table-filter-form' action='' method='GET'>
-                                        <input type='hidden' name='view-table' value='<?php echo htmlspecialchars($_GET['view-table']); ?>'>
-                                        <label for='search'>Search for keyword:</label>
-                                        <input type='text' id='filter-search-box' name='search'
-                                            placeholder='Enter keyword... (e.g., Maria, Employed)'
-                                            maxlength='100'>
-                                    </form>
-                                </div>
-                                <div class='modal-footer'>
-                                    <button class='btn-apply' type='submit' form='table-filter-form'>Apply</button>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class='search-table'>
+                        <form id='table-search-form' action='' method='GET'>
+                            <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+                            <label for='search-box' class='visually-hidden'>Search:</label>
+                            <input type='text' id='search-box' name='search' value='<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ""; ?>' placeholder='Search...' maxlength='100' autocomplete='off'>
+                        </form>
+                    </div>
 
                         <?php
                         // --- 1. ALUMNI INFO MODAL ---
@@ -167,17 +125,17 @@ if ($alumni_result->num_rows > 0) {
                                             <span class='close'>&times;</span>
                                         </div>
                                         <form id='add-form-info' action='<?php echo BASE_URL; ?>admin/data/add-alum-info.php' method='POST'>
-                                            <div class='modal-body'>
+                                            <div class='modal-body modal-form-grid'>
                                                 <label for='add-alum-id'>ID:</label>
-                                                <input type='text' id='add-alum-id' name='alum-id' required pattern='\d{4}-\d{5}' title='ID must be in the format NNNN-NNNNN (e.g., 2025-12345)'>
+                                                <input type='text' id='add-alum-id' name='alum-id' required pattern='\d{4}-\d{5}' title='ID must be in the format NNNN-NNNNN (e.g., 2025-12345)' class='modal-input-field'>
                                                 <label for='add-alum-firstName'>First Name:</label>
-                                                <input type='text' id='add-alum-firstName' name='alum-firstName' required maxlength='50'>
+                                                <input type='text' id='add-alum-firstName' name='alum-firstName' required maxlength='50' class='modal-input-field'>
                                                 <label for='add-alum-lastName'>Last Name:</label>
-                                                <input type='text' id='add-alum-lastName' name='alum-lastName' required maxlength='50'>
+                                                <input type='text' id='add-alum-lastName' name='alum-lastName' required maxlength='50' class='modal-input-field'>
                                                 <label for='add-alum-contactInfo'>Email:</label>
-                                                <input type='email' id='add-alum-contactInfo' name='alum-contactInfo' required maxlength='100'>
+                                                <input type='email' id='add-alum-contactInfo' name='alum-contactInfo' required maxlength='100' class='modal-input-field'>
                                                 <label for='add-alum-status'>Status:</label>
-                                                <select id='add-alum-status' name='alum-status'>
+                                                <select id='add-alum-status' name='alum-status' class='modal-input-field'>
                                                     <?php
                                                     foreach ($all_statuses as $status) {
                                                         echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
@@ -207,10 +165,10 @@ if ($alumni_result->num_rows > 0) {
                                             <span class='close'>&times;</span>
                                         </div>
                                         <form id='add-form-courses' action='<?php echo BASE_URL; ?>admin/data/add-alum-courses.php' method='POST'>
-                                            <div class='modal-body'>
+                                            <div class='modal-body modal-form-grid'>
                                                 
                                                 <label for='add-alum-id-courses'>Alum:</label>
-                                                <select id='add-alum-id-courses' name='alum-id' required>
+                                                <select id='add-alum-id-courses' name='alum-id' required class='modal-input-field'>
                                                     <option value="" disabled selected>Select an Alum...</option>
                                                     <?php
                                                     foreach ($all_alumni as $alum) {
@@ -221,7 +179,7 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
                                                 
                                                 <label for='add-degree-id-courses'>Degree:</label>
-                                                <select id='add-degree-id-courses' name='degree-id' required>
+                                                <select id='add-degree-id-courses' name='degree-id' required class='modal-input-field'>
                                                     <?php
                                                     foreach ($all_degrees as $degree) {
                                                         echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" . htmlspecialchars($degree['Degree_Name']) . "</option>";
@@ -230,7 +188,7 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
 
                                                 <label for='add-program-id-courses'>Program:</label>
-                                                <select id='add-program-id-courses' name='program-id' required>
+                                                <select id='add-program-id-courses' name='program-id' required class='modal-input-field'>
                                                     <?php
                                                     foreach ($all_programs as $program) {
                                                         echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" . htmlspecialchars($program['Program_Name']) . "</option>";
@@ -239,7 +197,7 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
                                                 
                                                 <label for='add-grad-year-courses'>Grad Year:</label>
-                                                <select id='add-grad-year-courses' name='grad-year' required>
+                                                <select id='add-grad-year-courses' name='grad-year' required class='modal-input-field'>
                                                     <?php
                                                     $currentYear = (int)date("Y");
                                                     $earliestYear = 1970;
@@ -269,10 +227,10 @@ if ($alumni_result->num_rows > 0) {
                                             <span class='close'>&times;</span>
                                         </div>
                                         <form id='add-form-employment' action='<?php echo BASE_URL; ?>admin/data/add-alum-employment.php' method='POST'>
-                                            <div class='modal-body'>
+                                            <div class='modal-body modal-form-grid'>
                                                 
                                                 <label for='add-alum-id-employment'>Alum:</label>
-                                                <select id='add-alum-id-employment' name='alum-id' required>
+                                                <select id='add-alum-id-employment' name='alum-id' required class='modal-input-field'>
                                                     <option value="" disabled selected>Select an Alum...</option>
                                                     <?php
                                                     foreach ($all_alumni as $alum) {
@@ -283,7 +241,7 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
 
                                                 <label for='add-position-id'>Position:</label>
-                                                <select id='add-position-id' name='position-id' required>
+                                                <select id='add-position-id' name='position-id' required class='modal-input-field'>
                                                     <?php
                                                     foreach ($all_positions as $position) {
                                                         echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
@@ -292,7 +250,7 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
 
                                                 <label for='add-company-id'>Company:</label>
-                                                <select id='add-company-id' name='company-id' required>
+                                                <select id='add-company-id' name='company-id' required class='modal-input-field'>
                                                     <?php
                                                     foreach ($all_companies as $company) {
                                                         echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
@@ -301,7 +259,7 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
 
                                                 <label for='add-location-id'>Location:</label>
-                                                <select id='add-location-id' name='location-id' required>
+                                                <select id='add-location-id' name='location-id' required class='modal-input-field'>
                                                     <?php
                                                     foreach ($all_locations as $location) {
                                                         echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
@@ -310,11 +268,11 @@ if ($alumni_result->num_rows > 0) {
                                                 </select>
 
                                                 <label for='add-start-date'>Start Date:</label>
-                                                <input type='date' id='add-start-date' name='start-date' required>
+                                                <input type='date' id='add-start-date' name='start-date' required class='modal-input-field'>
 
                                                 <label for='add-end-date'>End Date:</label>
                                                 <div class="input-wrapper">
-                                                    <input type='date' id='add-end-date' name='end-date' title="Leave empty if Current">
+                                                    <input type='date' id='add-end-date' name='end-date' title="Leave empty if Current" class='modal-input-field'>
                                                     <span class="input-hint">Leave empty if Current</span>
                                                 </div>
 

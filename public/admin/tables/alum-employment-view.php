@@ -3,7 +3,6 @@
 
     // Columns that can be sorted
     $allowed_columns = [
-        'id' => 'alumni.Alum_ID',
         'name' => 'alumni.Alum_LastName',
         'position' => 'job_position.Position_Name',
         'company' => 'company.Company_Name',
@@ -110,19 +109,13 @@
 ?>
         <table>
                 <tr>
-                    <th colspan='6' class='table-header'>Alumni Employment</th>
+                    <th colspan='5' class='table-header'>Alumni Employment</th>
                 </tr>
                 <tr>
                     <th>
-                        <a href='<?php echo "$current_table_url&sort=id&order=" . (($sort_column_key == 'id') ? $next_order : 'ASC') . $search_url_param; ?>'
-                        class='<?php if($sort_column_key == 'id') echo "active-sort $sort_order"; ?>'>
-                        ID
-                        </a>
-                    </th>
-                    <th>
                         <a href='<?php echo "$current_table_url&sort=name&order=" . (($sort_column_key == 'name') ? $next_order : 'ASC') . $search_url_param; ?>'
                         class='<?php if($sort_column_key == 'name') echo "active-sort $sort_order"; ?>'>
-                        Name
+                        Alumni
                         </a>
                     </th>
                     <th>
@@ -151,8 +144,7 @@
             $endDate = $row['End_Date'] ? $row['End_Date'] : 'Present';
             
             echo "<tr>
-                    <td>" . htmlspecialchars($row['Alum_ID']) . "</td>
-                    <td>" . htmlspecialchars($row['Alum_LastName']) . ", " . htmlspecialchars($row['Alum_FirstName']) . "</td>
+                    <td>" . htmlspecialchars($row['Alum_LastName']) . ", " . htmlspecialchars($row['Alum_FirstName']) . "<br><small>" . htmlspecialchars($row['Alum_ID']) . "</small></td>
                     <td>" . htmlspecialchars($row['Position_Name']) . "</td>
                     <td>" . htmlspecialchars($row['Company_Name']) . "<br><small>" . htmlspecialchars($row['City']) . ", " . htmlspecialchars($row['Country']) . "</small></td>
                     <td>" . htmlspecialchars($row['Start_Date']) . " to <br>" . htmlspecialchars($endDate) . "</td>
@@ -202,7 +194,7 @@
             <span class="close">&times;</span>
         </div>
         <form id="edit-form" action="<?php echo BASE_URL; ?>admin/data/update-alum-employment.php" method="POST">
-            <div class="modal-body">
+            <div class="modal-body modal-form-grid">
                 <input type="hidden" id="edit-emp-id" name="emp-id" value="">
                 <input type="hidden" id="edit-alum-old-id" name="alum-old-id" value="">
                 
@@ -210,55 +202,55 @@
                 <input type="text" id="edit-alum-id" name="alum-id" value=""
                    required
                    pattern="\d{4}-\d{5}"
-                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)">
-
+                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)" class='modal-input-field'>
+ 
                 
                 <label for="edit-alum-firstName">First Name:</label>
                 <input type="text" id="edit-alum-firstName" name="alum-firstName" value=""
                     required
-                    maxlength="30">
+                    maxlength="30" class='modal-input-field'>
                 
                 <label for="edit-alum-lastName">Last Name:</label>
                 <input type="text" id="edit-alum-lastName" name="alum-lastName" value=""
                     required
-                    maxlength="30">
-
+                    maxlength="30" class='modal-input-field'>
+ 
                 <label for="edit-position-id">Position:</label>
-                <select id="edit-position-id" name="position-id">
+                <select id="edit-position-id" name="position-id" class='modal-input-field'>
                     <?php
                     // Ensure $all_positions is populated from database before this view is loaded
                     if(isset($all_positions)){
                         foreach ($all_positions as $position) {
-                            echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" 
-                                . htmlspecialchars($position['Position_Name']) 
+                            echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>"
+                                . htmlspecialchars($position['Position_Name'])
                                 . "</option>";
                         }
                     }
                     ?>
                 </select>
-
+ 
                 <label for="edit-company-id">Company:</label>
-                <select id="edit-company-id" name="company-id">
+                <select id="edit-company-id" name="company-id" class='modal-input-field'>
                     <?php
                     // Ensure $all_companies is populated from database
                      if(isset($all_companies)){
                         foreach ($all_companies as $company) {
-                            echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" 
-                                . htmlspecialchars($company['Company_Name']) 
+                            echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>"
+                                . htmlspecialchars($company['Company_Name'])
                                 . "</option>";
                         }
                     }
                     ?>
                 </select>
-
+ 
                 <label for="edit-location-id">Location:</label>
-                <select id="edit-location-id" name="location-id">
+                <select id="edit-location-id" name="location-id" class='modal-input-field'>
                     <?php
                     // Ensure $all_locations is populated from database
                      if(isset($all_locations)){
                         foreach ($all_locations as $location) {
-                            echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" 
-                                . htmlspecialchars($location['City'] . ", " . $location['Country']) 
+                            echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>"
+                                . htmlspecialchars($location['City'] . ", " . $location['Country'])
                                 . "</option>";
                         }
                     }
@@ -266,14 +258,14 @@
                 </select>
                 
                 <label for="edit-start-date">Start Date:</label>
-                <input type="date" id="edit-start-date" name="start-date" required>
-
+                <input type="date" id="edit-start-date" name="start-date" required class='modal-input-field'>
+ 
                 <label for="edit-end-date">End Date:</label>
                 <div class="input-wrapper">
-                    <input type="date" id="edit-end-date" name="end-date">
+                    <input type="date" id="edit-end-date" name="end-date" class='modal-input-field'>
                     <span class="input-hint">Leave empty if Current</span>
                 </div>
-
+ 
             </div>
             <div class="modal-footer">
                 <button class="btn-apply" type="submit" form="edit-form">Apply Changes</button>

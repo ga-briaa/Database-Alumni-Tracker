@@ -34,7 +34,7 @@
     
                 <div>
                     <p>Manage alumni, courses, status, and employment information.</p>
-                    <a href="<?php echo BASE_URL; ?>admin/database-manage.php">Go to Manage Database</a>
+                    <a href="<?php echo BASE_URL; ?>admin/database-manage.php?view-table=alumni-employment">Go to Manage Database</a>
                 </div>
             </div>
         </div>
