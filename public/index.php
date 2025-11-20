@@ -29,11 +29,24 @@ require_once __DIR__ . '/../src/database-config.php';
                     }
                     ?>
                 </header>
-    
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consequat ullamcorper luctus. Nullam a pulvinar nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sollicitudin tempus est, ac vehicula massa dapibus vitae. Donec bibendum et orci nec hendrerit. Ut ullamcorper risus vitae magna ultricies efficitur. Vivamus congue ullamcorper urna, at gravida leo facilisis vitae. Etiam rutrum nunc in lacus tempor luctus. Etiam placerat interdum velit eget ultrices. Suspendisse dapibus, diam non lobortis efficitur, metus nulla vulputate mauris, quis interdum mauris velit sit amet magna. Donec a ullamcorper eros, vel commodo lacus.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consequat ullamcorper luctus. Nullam a pulvinar nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sollicitudin tempus est, ac vehicula massa dapibus vitae. Donec bibendum et orci nec hendrerit. Ut ullamcorper risus vitae magna ultricies efficitur. Vivamus congue ullamcorper urna, at gravida leo facilisis vitae. Etiam rutrum nunc in lacus tempor luctus. Etiam placerat interdum velit eget ultrices. Suspendisse dapibus, diam non lobortis efficitur, metus nulla vulputate mauris, quis interdum mauris velit sit amet magna. Donec a ullamcorper eros, vel commodo lacus.</p>
-                </div>
+
+                <?php 
+                if (isset($_SESSION['username']) && $_SESSION['username'] === 'admin') {
+                        // Display message for admin user
+                        echo "<div>
+                                <p>Welcome to the DU Alumni Tracker.</p>
+                                <p>Manage the database and oversee all alumni records.</p>
+                                <p><strong>You have full access to the database.</strong></p>
+                            </div>";
+                    } else {
+                        // Display message for regular alumni user
+                        echo "<div>
+                                <p>Welcome to the DU Alumni Tracker!</p>
+                                <p>This Alumni Tracker is designed to help us stay in touch and celebrate your milestones. We are looking to update our records regarding your profile. Whether you are just starting out, changing careers, or leading a team, your story matters to us. </p>
+                                <p>By tracking your <strong>course history, graduation year, and career progress</strong>, you can help enhance our curriculum and support future alumni.</p>
+                            </div>";
+                    }
+                ?>
             </div>
     
             <?php if (isset($_SESSION['username']) && $_SESSION['username'] === 'admin') { ?>
