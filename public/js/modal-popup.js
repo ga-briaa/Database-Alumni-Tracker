@@ -92,6 +92,16 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-college-name")) modal.querySelector("#edit-college-name").value = name;
       }
 
+      // 6. Handle Degree edit modal (NEW)
+      else if (modalId === "editModal-degree") {
+        const id = button.getAttribute("data-id");
+        const name = button.getAttribute("data-name");
+
+        if(modal.querySelector("#edit-degree-id")) modal.querySelector("#edit-degree-id").value = id;
+        if(modal.querySelector("#edit-degree-old-id")) modal.querySelector("#edit-degree-old-id").value = id;
+        if(modal.querySelector("#edit-degree-name")) modal.querySelector("#edit-degree-name").value = name;
+      }
+
       // 6. Handle Delete modal (for info, courses, employment, program, AND college)
       else if (modalId === "deleteModal") {
         const alumId = button.getAttribute("data-id");
@@ -109,6 +119,8 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.querySelector("#delete-program-id").value = programId;
         } else if (modal.querySelector("#delete-college-id") && alumId) { // Re-using alumId for general data-id
             modal.querySelector("#delete-college-id").value = alumId;
+        } else if (modal.querySelector("#delete-degree-id") && alumId) { // Re-using alumId for general data-id
+            modal.querySelector("#delete-degree-id").value = alumId;
         }
       }
 
