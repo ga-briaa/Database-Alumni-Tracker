@@ -202,18 +202,18 @@
                 <input type="text" id="edit-alum-id" name="alum-id" value=""
                    required
                    pattern="\d{4}-\d{5}"
-                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)" class='modal-input-field'>
+                   title="ID must be in the format XXXX-XXXXX (e.g., 2025-12345)" maxlength="10" class='modal-input-field'>
  
                 
                 <label for="edit-alum-firstName">First Name:</label>
                 <input type="text" id="edit-alum-firstName" name="alum-firstName" value=""
                     required
-                    maxlength="30" class='modal-input-field'>
+                    maxlength="50" class='modal-input-field'>
                 
                 <label for="edit-alum-lastName">Last Name:</label>
                 <input type="text" id="edit-alum-lastName" name="alum-lastName" value=""
                     required
-                    maxlength="30" class='modal-input-field'>
+                    maxlength="50" class='modal-input-field'>
  
                 <label for="edit-position-id">Position:</label>
                 <select id="edit-position-id" name="position-id" class='modal-input-field'>
