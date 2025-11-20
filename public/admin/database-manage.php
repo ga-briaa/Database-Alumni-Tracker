@@ -115,6 +115,7 @@ if ($alumni_result->num_rows > 0) {
                             <option value="alumni-courses" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-courses') echo 'selected'; ?>>Alumni's Courses</option>
                             <option value="alumni-employment" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-employment') echo 'selected'; ?>>Alumni's Employment</option>
                             <option value="program" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'program') echo 'selected'; ?>>Programs</option>
+                            <option value="college" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'college') echo 'selected'; ?>>Colleges</option>
                         </select>
                     </form>
                 </div>
@@ -339,6 +340,12 @@ if ($alumni_result->num_rows > 0) {
                                 </div>
                             </div>
                         <?php
+                        } elseif ($selected_table == 'college') {
+                        ?>
+                            <div class='add-data'>
+                                <button class='myBtn btn-modal-trigger' data-target='addModal-college'>+ Add Data</button>
+                            </div>
+                        <?php
                         }
                         ?>
 
@@ -358,6 +365,8 @@ if ($alumni_result->num_rows > 0) {
                         include 'tables/alum-employment-view.php';
                     } elseif($selected_table == 'program') {
                         include 'tables/program-view.php';
+                    } elseif($selected_table == 'college') {
+                        include 'tables/college-view.php';
                     }
 
                     if (isset($totalPages) && $totalPages > 1) {
