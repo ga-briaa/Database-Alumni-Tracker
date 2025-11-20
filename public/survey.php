@@ -1,4 +1,8 @@
-<?php include '../src/database-config.php'; ?>
+<?php
+session_start(); // MUST BE INCLUDED TO SAVE LOGIN INFO !
+
+include '../src/database-config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
