@@ -1,7 +1,9 @@
 <?php
 include '../../src/database-config.php';
 
-// Fetch all statuses for the dropdown
+// --- FETCH DROPDOWN DATA ---
+
+// 1. Statuses
 $status_sql = "SELECT Status_ID, Status_Name FROM status ORDER BY Status_Name";
 $status_result = $conn->query($status_sql);
 $all_statuses = [];
@@ -10,7 +12,8 @@ if ($status_result->num_rows > 0) {
         $all_statuses[] = $status_row;
     }
 }
-// Fetch all degrees for the dropdown
+
+// 2. Degrees
 $degree_sql = "SELECT Degree_ID, Degree_Name FROM degree ORDER BY Degree_Name";
 $degree_result = $conn->query($degree_sql);
 $all_degrees = [];
@@ -19,7 +22,8 @@ if ($degree_result->num_rows > 0) {
         $all_degrees[] = $degree_row;
     }
 }
-// Fetch all programs for the dropdown
+
+// 3. Programs
 $program_sql = "SELECT Program_ID, Program_Name FROM program ORDER BY Program_Name";
 $program_result = $conn->query($program_sql);
 $all_programs = [];
@@ -29,7 +33,37 @@ if ($program_result->num_rows > 0) {
     }
 }
 
-// Fetch all alumni for the "Add Graduation" dropdown
+// 4. Positions (For Employment)
+$position_sql = "SELECT Position_ID, Position_Name FROM job_position ORDER BY Position_Name";
+$position_result = $conn->query($position_sql);
+$all_positions = [];
+if ($position_result->num_rows > 0) {
+    while($row = $position_result->fetch_assoc()) {
+        $all_positions[] = $row;
+    }
+}
+
+// 5. Companies (For Employment)
+$company_sql = "SELECT Company_ID, Company_Name FROM company ORDER BY Company_Name";
+$company_result = $conn->query($company_sql);
+$all_companies = [];
+if ($company_result->num_rows > 0) {
+    while($row = $company_result->fetch_assoc()) {
+        $all_companies[] = $row;
+    }
+}
+
+// 6. Locations (For Employment)
+$location_sql = "SELECT Location_ID, City, Country FROM location ORDER BY Country, City";
+$location_result = $conn->query($location_sql);
+$all_locations = [];
+if ($location_result->num_rows > 0) {
+    while($row = $location_result->fetch_assoc()) {
+        $all_locations[] = $row;
+    }
+}
+
+// 7. All Alumni (For Dropdowns)
 $alumni_sql = "SELECT Alum_ID, Alum_FirstName, Alum_LastName FROM alumni ORDER BY Alum_LastName, Alum_FirstName";
 $alumni_result = $conn->query($alumni_sql);
 $all_alumni = [];
@@ -38,7 +72,6 @@ if ($alumni_result->num_rows > 0) {
         $all_alumni[] = $alumni_row;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -46,9 +79,7 @@ if ($alumni_result->num_rows > 0) {
     <head>
         <?php include '../../src/templates/head.php'; ?>
         <title>DU - Database</title>
-        
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/database-manage.css">
-        
     </head>
 
     <body>
@@ -56,6 +87,7 @@ if ($alumni_result->num_rows > 0) {
 
         <div class="card-container">
             <div class="btn-selectors">
+                <!-- SELECT TABLE BUTTON -->
                 <div class="select-table">
                     <button class="myBtn btn-modal-trigger" data-target="selectModal">Select Table</button>
     
@@ -69,15 +101,18 @@ if ($alumni_result->num_rows > 0) {
                                 <form id="table-select-form" action="" method="GET">
                                     <div class="radio-options">
                                         <div class="radio-option-item">
-                                            <input type="radio" id="alumni-info" name="view-table" value="alumni-info">
+                                            <input type="radio" id="alumni-info" name="view-table" value="alumni-info" 
+                                                <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-info') echo 'checked'; ?>>
                                             <label for="alumni-info">Alumni Information</label><br>
                                         </div>
                                         <div class="radio-option-item">
-                                            <input type="radio" id="alumni-courses" name="view-table" value="alumni-courses">
+                                            <input type="radio" id="alumni-courses" name="view-table" value="alumni-courses"
+                                                <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-courses') echo 'checked'; ?>>
                                             <label for="alumni-courses">Alumni's Courses</label>
                                         </div>
                                         <div class="radio-option-item">
-                                            <input type="radio" id="alumni-employment" name="view-table" value="alumni-employment">
+                                            <input type="radio" id="alumni-employment" name="view-table" value="alumni-employment"
+                                                <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-employment') echo 'checked'; ?>>
                                             <label for="alumni-employment">Alumni's Employment</label><br>
                                         </div>
                                     </div>
@@ -90,7 +125,7 @@ if ($alumni_result->num_rows > 0) {
                     </div>
                 </div>
     
-                
+                <!-- FILTER & ADD BUTTONS -->
                 <?php
                 if(isset($_GET['view-table'])) {
                     $selected_table = $_GET['view-table'];
@@ -120,9 +155,8 @@ if ($alumni_result->num_rows > 0) {
                         </div>
 
                         <?php
-                        
+                        // --- 1. ALUMNI INFO MODAL ---
                         if ($selected_table == 'alumni-info') {
-                        // --- BUTTON/MODAL FOR ALUMNI-INFO ---
                         ?>
                             <div class='add-data'>
                                 <button class='myBtn btn-modal-trigger' data-target='addModal-info'>+ Add Data</button>
@@ -160,8 +194,8 @@ if ($alumni_result->num_rows > 0) {
                             </div>
 
                         <?php
+                        // --- 2. ALUMNI COURSES MODAL ---
                         } elseif ($selected_table == 'alumni-courses') {
-                        // --- BUTTON/MODAL FOR ALUMNI-COURSES (NOW "ADD GRADUATION RECORD") ---
                         ?>
                             <div class='add-data'>
                                 <button class='myBtn btn-modal-trigger' data-target='addModal-courses'>+ Add Data</button>
@@ -172,22 +206,19 @@ if ($alumni_result->num_rows > 0) {
                                             <h2>Add Graduation Record</h2>
                                             <span class='close'>&times;</span>
                                         </div>
-                                        <form id='add-form-courses' action='<?php echo BASE_URL; ?>admin/data/add-alum-courses.php' method='POST' onsubmit='return validateAlumniSelection()'>
+                                        <form id='add-form-courses' action='<?php echo BASE_URL; ?>admin/data/add-alum-courses.php' method='POST'>
                                             <div class='modal-body'>
                                                 
-                                                <label for='alum-search-input'>Alum:</label>
-                                                <input type='text' id='alum-search-input' list='alumni-list' placeholder='Type or select an alum...' required>
-
-                                                <datalist id='alumni-list'>
+                                                <label for='add-alum-id-courses'>Alum:</label>
+                                                <select id='add-alum-id-courses' name='alum-id' required>
+                                                    <option value="" disabled selected>Select an Alum...</option>
                                                     <?php
                                                     foreach ($all_alumni as $alum) {
                                                         $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
-                                                        echo "<option value='" . $displayName . "' data-id='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
+                                                        echo "<option value='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
                                                     }
                                                     ?>
-                                                </datalist>
-
-                                                <input type='hidden' id='add-alum-id-courses' name='alum-id' value=''>
+                                                </select>
                                                 
                                                 <label for='add-degree-id-courses'>Degree:</label>
                                                 <select id='add-degree-id-courses' name='degree-id' required>
@@ -226,8 +257,8 @@ if ($alumni_result->num_rows > 0) {
                                 </div>
                             </div>
                         <?php
+                        // --- 3. ALUMNI EMPLOYMENT MODAL ---
                         } elseif ($selected_table == 'alumni-employment') {
-                        // --- BUTTON/MODAL FOR ALUMNI-EMPLOYMENT ---
                         ?>
                             <div class='add-data'>
                                 <button class='myBtn btn-modal-trigger' data-target='addModal-employment'>+ Add Data</button>
@@ -239,26 +270,71 @@ if ($alumni_result->num_rows > 0) {
                                         </div>
                                         <form id='add-form-employment' action='<?php echo BASE_URL; ?>admin/data/add-alum-employment.php' method='POST'>
                                             <div class='modal-body'>
-                                                <p>(Employment fields would go here...)</p>
-                                                <p><strong>Note:</strong> 'add-alum-employment.php' script has not been created yet.</p>
+                                                
+                                                <label for='add-alum-id-employment'>Alum:</label>
+                                                <select id='add-alum-id-employment' name='alum-id' required>
+                                                    <option value="" disabled selected>Select an Alum...</option>
+                                                    <?php
+                                                    foreach ($all_alumni as $alum) {
+                                                        $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
+                                                        echo "<option value='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+
+                                                <label for='add-position-id'>Position:</label>
+                                                <select id='add-position-id' name='position-id' required>
+                                                    <?php
+                                                    foreach ($all_positions as $position) {
+                                                        echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+
+                                                <label for='add-company-id'>Company:</label>
+                                                <select id='add-company-id' name='company-id' required>
+                                                    <?php
+                                                    foreach ($all_companies as $company) {
+                                                        echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+
+                                                <label for='add-location-id'>Location:</label>
+                                                <select id='add-location-id' name='location-id' required>
+                                                    <?php
+                                                    foreach ($all_locations as $location) {
+                                                        echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+
+                                                <label for='add-start-date'>Start Date:</label>
+                                                <input type='date' id='add-start-date' name='start-date' required>
+
+                                                <label for='add-end-date'>End Date:</label>
+                                                <div class="input-wrapper">
+                                                    <input type='date' id='add-end-date' name='end-date' title="Leave empty if Current">
+                                                    <span class="input-hint">Leave empty if Current</span>
+                                                </div>
+
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn-apply" type="submit" form="add-form-employment" disabled>Add Record</button>
+                                                <button class="btn-apply" type="submit" form="add-form-employment">Add Record</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         <?php
-                        } // End of dynamic add button if/elseif
+                        } 
                         ?>
 
-                        <?php } // End of if(isset($_GET['view-table'])) ?>
+                        <?php } ?>
             </div>
 
             <div class="table-display">
                 <?php
-                // (No changes in this section)
                 if(isset($_GET['view-table'])) {
                     $selected_table = $_GET['view-table'];
                     
@@ -272,20 +348,22 @@ if ($alumni_result->num_rows > 0) {
 
                     if (isset($totalPages) && $totalPages > 1) {
                         echo '<div class="pagination">';
+                        // Reconstruct current URL parameters
+                        $sortParams = "&sort=$sort_column_key&order=$sort_order&search=$search_term";
                         
                         if ($currentPage > 1) {
                             $prevPage = $currentPage - 1;
-                            echo "<a href='?view-table=$selected_table&page=$prevPage&sort=$sort_column_key&order=$sort_order&search=$search_term'>&lt;</a>";
+                            echo "<a href='?view-table=$selected_table&page=$prevPage$sortParams'>&lt;</a>";
                         }
 
                         for ($i = 1; $i <= $totalPages; $i++) {
                             $activeClass = ($i == $currentPage) ? 'class="active"' : '';
-                            echo "<a href='?view-table=$selected_table&page=$i&sort=$sort_column_key&order=$sort_order&search=$search_term' $activeClass>$i</a>";
+                            echo "<a href='?view-table=$selected_table&page=$i$sortParams' $activeClass>$i</a>";
                         }
 
                         if ($currentPage < $totalPages) {
                             $nextPage = $currentPage + 1;
-                            echo "<a href='?view-table=$selected_table&page=$nextPage&sort=$sort_column_key&order=$sort_order&search=$search_term'>&gt;</a>";
+                            echo "<a href='?view-table=$selected_table&page=$nextPage$sortParams'>&gt;</a>";
                         }
                         echo '</div>';
                     }
@@ -299,61 +377,7 @@ if ($alumni_result->num_rows > 0) {
 
         <?php include '../../src/templates/footer.php'; ?>
         
-        <script src="<?php echo BASE_URL; ?>js/modal-popup.js?v=1.2"></script>
+        <script src="<?php echo BASE_URL; ?>js/modal-popup.js"></script>
         
-        <script>
-            // Find the search input and hidden input
-            const alumSearchInput = document.getElementById('alum-search-input');
-            const hiddenAlumIdInput = document.getElementById('add-alum-id-courses');
-            const dataList = document.getElementById('alumni-list');
-
-            if (alumSearchInput) {
-                // Listen for when the user selects a value
-                alumSearchInput.addEventListener('input', function(event) {
-                    const selectedValue = event.target.value;
-                    let selectedId = '';
-
-                    // Loop through the datalist options to find the matching ID
-                    if (dataList) {
-                        for (const option of dataList.options) {
-                            if (option.value === selectedValue) {
-                                selectedId = option.getAttribute('data-id');
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // Update the hidden input's value
-                    if(hiddenAlumIdInput) {
-                        hiddenAlumIdInput.value = selectedId;
-                    }
-                });
-
-                // Clear hidden input if user clears the text box
-                alumSearchInput.addEventListener('change', function(event) {
-                    if (event.target.value === "") {
-                        if(hiddenAlumIdInput) {
-                            hiddenAlumIdInput.value = "";
-                        }
-                    }
-                });
-            }
-
-            // Validation function to run before submitting the form
-            function validateAlumniSelection() {
-                if (hiddenAlumIdInput && hiddenAlumIdInput.value === "") {
-                    // Check if the text box has a value but it's not a valid one
-                    if (alumSearchInput && alumSearchInput.value !== "") {
-                        alert("Invalid alum. Please select a valid alum from the list.");
-                    } else {
-                        // This will be caught by the 'required' on the search box
-                        // but we add it for safety.
-                        alert("Please select an alum.");
-                    }
-                    return false; // Stop form submission
-                }
-                return true; // Allow form submission
-            }
-        </script>
     </body>
 </html>
