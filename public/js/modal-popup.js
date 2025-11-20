@@ -70,24 +70,33 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-end-date")) modal.querySelector("#edit-end-date").value = endDate;
       }
 
-      // 4. Handle Delete modal (for info, courses, AND employment)
+      // 4. Handle Program edit modal
+      else if (modalId === "editModal-program") {
+        const id = button.getAttribute("data-id");
+        const name = button.getAttribute("data-name");
+        const college = button.getAttribute("data-college");
+
+        if(modal.querySelector("#edit-program-id")) modal.querySelector("#edit-program-id").value = id;
+        if(modal.querySelector("#edit-program-old-id")) modal.querySelector("#edit-program-old-id").value = id;
+        if(modal.querySelector("#edit-program-name")) modal.querySelector("#edit-program-name").value = name;
+        if(modal.querySelector("#edit-program-college")) modal.querySelector("#edit-program-college").value = college;
+      }
+
+      // 5. Handle Delete modal (for info, courses, employment, AND program)
       else if (modalId === "deleteModal") {
         const alumId = button.getAttribute("data-id");
         const gradId = button.getAttribute("data-grad-id");
         const empId = button.getAttribute("data-emp-id");
+        const programId = button.getAttribute("data-id"); // All 'data-id' are unique enough for now
 
-        if (alumId) {
-          // Delete Alumni Info
-          const deleteInput = modal.querySelector("#delete-alum-id");
-          if (deleteInput) deleteInput.value = alumId;
-        } else if (gradId) {
-          // Delete Course Record
-          const deleteInput = modal.querySelector("#delete-grad-id");
-          if (deleteInput) deleteInput.value = gradId;
-        } else if (empId) {
-          // Delete Employment Record
-          const deleteInput = modal.querySelector("#delete-emp-id");
-          if (deleteInput) deleteInput.value = empId;
+        if (modal.querySelector("#delete-alum-id") && alumId) {
+          modal.querySelector("#delete-alum-id").value = alumId;
+        } else if (modal.querySelector("#delete-grad-id") && gradId) {
+          modal.querySelector("#delete-grad-id").value = gradId;
+        } else if (modal.querySelector("#delete-emp-id") && empId) {
+          modal.querySelector("#delete-emp-id").value = empId;
+        } else if (modal.querySelector("#delete-program-id") && programId) {
+            modal.querySelector("#delete-program-id").value = programId;
         }
       }
 
