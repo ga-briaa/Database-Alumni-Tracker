@@ -32,7 +32,17 @@ if ($degree_result->num_rows > 0) {
     }
 }
 
-// 3. Programs
+// 3. Colleges (Needed for Program dropdown)
+$college_sql = "SELECT College_ID, College_Name FROM college ORDER BY College_Name ASC";
+$college_result = $conn->query($college_sql);
+$all_colleges = [];
+if ($college_result->num_rows > 0) {
+    while ($college_row = $college_result->fetch_assoc()) {
+        $all_colleges[] = $college_row;
+    }
+}
+
+// 4. Programs
 $program_sql = "SELECT Program_ID, Program_Name FROM program ORDER BY Program_Name";
 $program_result = $conn->query($program_sql);
 $all_programs = [];
@@ -42,7 +52,7 @@ if ($program_result->num_rows > 0) {
     }
 }
 
-// 4. Positions (For Employment)
+// 5. Positions (For Employment)
 $position_sql = "SELECT Position_ID, Position_Name FROM job_position ORDER BY Position_Name";
 $position_result = $conn->query($position_sql);
 $all_positions = [];
@@ -52,7 +62,7 @@ if ($position_result->num_rows > 0) {
     }
 }
 
-// 5. Companies (For Employment)
+// 6. Companies (For Employment)
 $company_sql = "SELECT Company_ID, Company_Name FROM company ORDER BY Company_Name";
 $company_result = $conn->query($company_sql);
 $all_companies = [];
@@ -62,7 +72,7 @@ if ($company_result->num_rows > 0) {
     }
 }
 
-// 6. Locations (For Employment)
+// 7. Locations (For Employment)
 $location_sql = "SELECT Location_ID, City, Country FROM location ORDER BY Country, City";
 $location_result = $conn->query($location_sql);
 $all_locations = [];
@@ -72,7 +82,7 @@ if ($location_result->num_rows > 0) {
     }
 }
 
-// 7. All Alumni (For Dropdowns)
+// 8. All Alumni (For Dropdowns)
 $alumni_sql = "SELECT Alum_ID, Alum_FirstName, Alum_LastName FROM alumni ORDER BY Alum_LastName, Alum_FirstName";
 $alumni_result = $conn->query($alumni_sql);
 $all_alumni = [];
@@ -104,6 +114,7 @@ if ($alumni_result->num_rows > 0) {
                             <option value="alumni-info" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-info') echo 'selected'; ?>>Alumni Information</option>
                             <option value="alumni-courses" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-courses') echo 'selected'; ?>>Alumni's Courses</option>
                             <option value="alumni-employment" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-employment') echo 'selected'; ?>>Alumni's Employment</option>
+                            <option value="program" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'program') echo 'selected'; ?>>Programs</option>
                         </select>
                     </form>
                 </div>
@@ -294,7 +305,41 @@ if ($alumni_result->num_rows > 0) {
                                 </div>
                             </div>
                         <?php
-                        } 
+                        } elseif ($selected_table == 'program') {
+                        ?>
+                            <div class='add-data'>
+                                <button class='myBtn btn-modal-trigger' data-target='addModal-program'>+ Add Data</button>
+                                <div class='modal' id='addModal-program'>
+                                    <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <h2>Add New Program</h2>
+                                            <span class='close'>&times;</span>
+                                        </div>
+                                        <form id='add-form-program' action='<?php echo BASE_URL; ?>admin/data/add-program.php' method='POST'>
+                                            <div class='modal-body modal-form-grid'>
+                                                <label for='add-program-id'>Program ID:</label>
+                                                <input type='text' id='add-program-id' name='program-id' required maxlength='10' class='modal-input-field'>
+                                                <label for='add-program-name'>Program Name:</label>
+                                                <input type='text' id='add-program-name' name='program-name' required maxlength='40' class='modal-input-field'>
+                                                <label for='add-program-college'>College:</label>
+                                                <select id='add-program-college' name='program-college' class='modal-input-field'>
+                                                    <?php
+                                                    // This will be populated from the $all_colleges array fetched above
+                                                    foreach ($all_colleges as $college) {
+                                                        echo "<option value='" . htmlspecialchars($college['College_ID']) . "'>" . htmlspecialchars($college['College_Name']) . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn-apply" type="submit" form="add-form-program">Add Program</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
                         ?>
 
                         <?php } ?>
@@ -311,6 +356,8 @@ if ($alumni_result->num_rows > 0) {
                         include 'tables/alum-courses-view.php';
                     } elseif($selected_table == 'alumni-employment') {
                         include 'tables/alum-employment-view.php';
+                    } elseif($selected_table == 'program') {
+                        include 'tables/program-view.php';
                     }
 
                     if (isset($totalPages) && $totalPages > 1) {
