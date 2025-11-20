@@ -102,25 +102,34 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-degree-name")) modal.querySelector("#edit-degree-name").value = name;
       }
 
-      // 6. Handle Delete modal (for info, courses, employment, program, AND college)
-      else if (modalId === "deleteModal") {
-        const alumId = button.getAttribute("data-id");
-        const gradId = button.getAttribute("data-grad-id");
-        const empId = button.getAttribute("data-emp-id");
-        const programId = button.getAttribute("data-id"); // All 'data-id' are unique enough for now
+      // 7. Handle Status edit modal
+      else if (modalId === "editModal-status") {
+        const id = button.getAttribute("data-id");
+        const name = button.getAttribute("data-name");
 
-        if (modal.querySelector("#delete-alum-id") && alumId) {
-          modal.querySelector("#delete-alum-id").value = alumId;
-        } else if (modal.querySelector("#delete-grad-id") && gradId) {
-          modal.querySelector("#delete-grad-id").value = gradId;
-        } else if (modal.querySelector("#delete-emp-id") && empId) {
-          modal.querySelector("#delete-emp-id").value = empId;
-        } else if (modal.querySelector("#delete-program-id") && programId) {
-            modal.querySelector("#delete-program-id").value = programId;
-        } else if (modal.querySelector("#delete-college-id") && alumId) { // Re-using alumId for general data-id
-            modal.querySelector("#delete-college-id").value = alumId;
-        } else if (modal.querySelector("#delete-degree-id") && alumId) { // Re-using alumId for general data-id
-            modal.querySelector("#delete-degree-id").value = alumId;
+        if(modal.querySelector("#edit-status-id")) modal.querySelector("#edit-status-id").value = id;
+        if(modal.querySelector("#edit-status-old-id")) modal.querySelector("#edit-status-old-id").value = id;
+        if(modal.querySelector("#edit-status-name")) modal.querySelector("#edit-status-name").value = name;
+      }
+
+      // Handle Delete modal (for info, courses, employment, program, college, degree, AND status)
+      else if (modalId === "deleteModal") {
+        const idToDelete = button.getAttribute("data-id"); // General ID for deletion
+
+        if (modal.querySelector("#delete-alum-id") && idToDelete) {
+          modal.querySelector("#delete-alum-id").value = idToDelete;
+        } else if (modal.querySelector("#delete-grad-id") && button.getAttribute("data-grad-id")) {
+          modal.querySelector("#delete-grad-id").value = button.getAttribute("data-grad-id");
+        } else if (modal.querySelector("#delete-emp-id") && button.getAttribute("data-emp-id")) {
+          modal.querySelector("#delete-emp-id").value = button.getAttribute("data-emp-id");
+        } else if (modal.querySelector("#delete-program-id") && idToDelete) {
+            modal.querySelector("#delete-program-id").value = idToDelete;
+        } else if (modal.querySelector("#delete-college-id") && idToDelete) {
+            modal.querySelector("#delete-college-id").value = idToDelete;
+        } else if (modal.querySelector("#delete-degree-id") && idToDelete) {
+            modal.querySelector("#delete-degree-id").value = idToDelete;
+        } else if (modal.querySelector("#delete-status-id") && idToDelete) {
+            modal.querySelector("#delete-status-id").value = idToDelete;
         }
       }
 

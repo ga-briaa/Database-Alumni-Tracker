@@ -114,9 +114,10 @@ if ($alumni_result->num_rows > 0) {
                             <option value="alumni-info" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-info') echo 'selected'; ?>>Alumni Information</option>
                             <option value="alumni-courses" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-courses') echo 'selected'; ?>>Alumni's Courses</option>
                             <option value="alumni-employment" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'alumni-employment') echo 'selected'; ?>>Alumni's Employment</option>
-                            <option value="program" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'program') echo 'selected'; ?>>Programs</option>
-                            <option value="college" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'college') echo 'selected'; ?>>Colleges</option>
-                            <option value="degree" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'degree') echo 'selected'; ?>>Degrees</option>
+                            <option value="program" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'program') echo 'selected'; ?>>Program</option>
+                            <option value="college" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'college') echo 'selected'; ?>>College</option>
+                            <option value="degree" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'degree') echo 'selected'; ?>>Degree</option>
+                            <option value="status" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'status') echo 'selected'; ?>>Status</option>
                         </select>
                     </form>
                 </div>
@@ -353,6 +354,12 @@ if ($alumni_result->num_rows > 0) {
                                 <button class='myBtn btn-modal-trigger' data-target='addModal-degree'>+ Add Data</button>
                             </div>
                         <?php
+                        } elseif ($selected_table == 'status') {
+                        ?>
+                            <div class='add-data'>
+                                <button class='myBtn btn-modal-trigger' data-target='addModal-status'>+ Add Data</button>
+                            </div>
+                        <?php
                         }
                         ?>
 
@@ -376,6 +383,8 @@ if ($alumni_result->num_rows > 0) {
                         include 'tables/college-view.php';
                     } elseif($selected_table == 'degree') {
                         include 'tables/degree-view.php';
+                    } elseif($selected_table == 'status') {
+                        include 'tables/status-view.php';
                     }
 
                     if (isset($totalPages) && $totalPages > 1) {
