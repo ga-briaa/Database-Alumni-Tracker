@@ -25,7 +25,7 @@
 .myBtn {
     background-color: #8D1436;
     color: #FFFFFF;
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Lexend', 'sans-serif';
     font-size: 18px;
     font-weight: bold;
     text-align: center;
