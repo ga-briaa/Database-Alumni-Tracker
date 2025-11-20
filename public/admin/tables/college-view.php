@@ -137,13 +137,13 @@ if($result->num_rows > 0) {
                 <label for="edit-college-id">College ID:</label>
                 <input type="text" id="edit-college-id" name="college-id" value=""
                    required
-                   maxlength="10" class='modal-input-field'>
+                   maxlength="3" class='modal-input-field'>
  
                 
                 <label for="edit-college-name">College Name:</label>
                 <input type="text" id="edit-college-name" name="college-name" value=""
                     required
-                    maxlength="40" class='modal-input-field'>
+                    maxlength="25" class='modal-input-field'>
             </div>
             <div class="modal-footer">
                 <button class="btn-apply" type="submit" form="edit-college-form">Apply Changes</button>
@@ -163,12 +163,12 @@ if($result->num_rows > 0) {
                 <label for="add-college-id">College ID:</label>
                 <input type="text" id="add-college-id" name="college-id" value=""
                    required
-                   maxlength="10" class='modal-input-field'>
+                   maxlength="3" class='modal-input-field'>
                 
                 <label for="add-college-name">College Name:</label>
                 <input type="text" id="add-college-name" name="college-name" value=""
                     required
-                    maxlength="40" class='modal-input-field'>
+                    maxlength="25" class='modal-input-field'>
             </div>
             <div class="modal-footer">
                 <button class="btn-apply" type="submit" form="add-college-form">Add College</button>
