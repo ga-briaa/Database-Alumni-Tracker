@@ -1,4 +1,13 @@
 <?php
+session_start(); // MUST BE INCLUDED TO SAVE LOGIN INFO !
+
+// --- ADMIN AUTHENTICATION CHECK ---
+if (!isset($_SESSION['username']) || $_SESSION['username'] !== 'admin') {
+    // If not logged in as admin, redirect to login page
+    header("Location: " . BASE_URL . "login.php");
+    exit();
+}
+
 include '../../src/database-config.php';
 
 // --- FETCH DROPDOWN DATA ---
