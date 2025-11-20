@@ -29,6 +29,12 @@
     color: #111827;
 }
 
+.section-card form {
+    display: grid;
+    gap: 16px 20px;
+    align-items: center;
+}
+
 .section-card label {
     text-align: left;
 }
@@ -45,6 +51,7 @@
 }
 
 .btn-selectors {
+    justify-content: flex-end;
     align-self: flex-start;
     display: flex;
     gap: 1rem; /* 16px */

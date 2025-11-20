@@ -18,20 +18,22 @@
                     <h1>Login</h1>
                 </header>
 
-                <label>Username:</label>
-                <input type="text" value=""
-                    required
-                    maxlength="30">
-
-                <label>Password:</label>
-                <input type="password" value=""
-                    required
-                    maxlength="30"
-                    minlength="8">
-
-                <div class="btn-selectors">
-                    <button class="btn-apply" type="submit" form="edit-form">Login</button>
-                </div>
+                <form>
+                    <label>Username:</label>
+                    <input type="text" value=""
+                        required
+                        maxlength="30">
+    
+                    <label>Password:</label>
+                    <input type="password" value=""
+                        required
+                        maxlength="30"
+                        minlength="8">
+    
+                    <div class="btn-selectors">
+                        <button class="btn-apply" type="submit" form="edit-form">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
 
