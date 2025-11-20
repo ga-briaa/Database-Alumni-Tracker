@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); // MUST BE INCLUDED TO SAVE LOGIN INFO !
 
 include '../src/database-config.php';
 

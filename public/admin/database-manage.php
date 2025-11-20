@@ -1,4 +1,6 @@
 <?php
+session_start(); // MUST BE INCLUDED TO SAVE LOGIN INFO !
+
 include '../../src/database-config.php';
 
 // --- FETCH DROPDOWN DATA ---
