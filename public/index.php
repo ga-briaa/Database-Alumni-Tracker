@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/../src/database-config.php'; ?>
+<?php 
+session_start(); // MUST BE INCLUDED TO SAVE LOGIN INFO !
+
+require_once __DIR__ . '/../src/database-config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +21,13 @@
             <div class="section-card">
                 <header>
                     <!-- Alumni changes to which user is logged in, or if admin is logged in -->
-                    <h1>Welcome, Alumni!</h1>
+                    <?php
+                    if (isset($_SESSION['username'])) {
+                        echo "<h1>Welcome, " . htmlspecialchars($_SESSION['username']) . "!</h1>";
+                    } else {
+                        echo "<h1>Welcome, Alumni!</h1>";
+                    }
+                    ?>
                 </header>
     
                 <div>
@@ -26,17 +36,19 @@
                 </div>
             </div>
     
-            <!-- Section Card: Database (accessible to admin only) -->
-            <div class="section-card">
-                <header>
-                    <h1>Manage Database</h1>
-                </header>
-    
-                <div>
-                    <p>Manage alumni, courses, status, and employment information.</p>
-                    <a href="<?php echo BASE_URL; ?>admin/database-manage.php?view-table=alumni-employment">Go to Manage Database</a>
+            <?php if (isset($_SESSION['username']) && $_SESSION['username'] === 'admin') { ?>
+                <!-- Section Card: Database (accessible to admin only) -->
+                <div class="section-card">
+                    <header>
+                        <h1>Manage Database</h1>
+                    </header>
+        
+                    <div>
+                        <p>Manage alumni, courses, status, and employment information.</p>
+                        <a href="<?php echo BASE_URL; ?>admin/database-manage.php?view-table=alumni-employment">Go to Manage Database</a>
+                    </div>
                 </div>
-            </div>
+                <?php } ?>
         </div>
 
         <!-- Footer -->
