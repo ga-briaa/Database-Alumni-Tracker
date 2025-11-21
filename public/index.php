@@ -42,8 +42,7 @@ require_once __DIR__ . '/../src/database-config.php';
                         // Display message for regular alumni user
                         echo "<div>
                                 <p>Welcome to the DU Alumni Tracker!</p>
-                                <p>This Alumni Tracker is designed to help us stay in touch and celebrate your milestones. We are looking to update our records regarding your profile. Whether you are just starting out, changing careers, or leading a team, your story matters to us. </p>
-                                <p>By tracking your <strong>course history, graduation year, and career progress</strong>, you can help enhance our curriculum and support future alumni.</p>
+                                <p>This Alumni Tracker is designed to help us stay in touch and celebrate your milestones. We are managing your profiles for the betterment of our community, enhance our curriculum, and continue support for all alumni. </p>
                             </div>";
                     }
                 ?>
