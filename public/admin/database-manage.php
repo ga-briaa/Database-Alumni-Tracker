@@ -122,18 +122,90 @@ if ($alumni_result->num_rows > 0) {
                     </form>
                 </div>
     
-                <!-- FILTER & ADD BUTTONS -->
+                <!-- FILTER, SEARCH, & ADD BUTTONS -->
                 <?php
                 if(isset($_GET['view-table'])) {
                     $selected_table = $_GET['view-table'];
                 ?>
+                    <!-- SEARCH BOX -->
                     <div class='search-table'>
                         <form id='table-search-form' action='' method='GET'>
                             <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                            <?php if(isset($_GET['filter-alum-status'])): ?>
+                            <input type="hidden" name="filter-alum-status" value="<?php echo htmlspecialchars($_GET['filter-alum-status']); ?>">
+                            <?php endif; ?>
+
                             <label for='search-box' class='visually-hidden'>Search:</label>
                             <input type='text' id='search-box' name='search' value='<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ""; ?>' placeholder='Search...' maxlength='100' autocomplete='off'>
                         </form>
                     </div>
+
+                                    <?php
+                // --- 1. FILTER ALUMNI INFO MODAL ---
+                if ($selected_table == 'alumni-info') {
+                ?>
+                    <div class='filter-table'>
+                        <button class='myBtn btn-modal-trigger' data-target='filterModal-info'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                            </svg>
+                        </button>
+                        <div class='modal' id='filterModal-info'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h2>Filter Alumni Information</h2>
+                                    <span class='close'>&times;</span>
+                                </div>
+
+                                <form id='filter-form-info' action='' method='GET'>
+                                    <div class='modal-body modal-form-grid'>
+                                        <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                                        <?php if(isset($_GET['search'])): ?>
+                                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                        <?php endif; ?>
+
+                                        <label for='filter-alum-status'>Status:</label>
+                                        <select id='filter-alum-status' name='filter-alum-status' class='modal-input-field'>
+                                            <?php
+                                            foreach ($all_statuses as $status) {
+                                                echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn-apply" type="submit" form="filter-form-info">Apply Filter</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REMOVE FILTER -->
+                     <?php
+                     $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                     $hasFilter = isset($_GET['filter-alum-status']) && !empty($_GET['filter-alum-status']);
+
+                     if ($hasSearch || $hasFilter) {
+                    ?>
+                        <div class='remove-filter'>
+                            <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                class='myBtn'
+                                title='Remove Filters and Search'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                <?php 
+                }
+                ?>
 
                         <?php
                         // --- 1. ALUMNI INFO MODAL ---
@@ -387,10 +459,18 @@ if ($alumni_result->num_rows > 0) {
                         include 'tables/status-view.php';
                     }
 
+                    // --- PAGINATION ---
                     if (isset($totalPages) && $totalPages > 1) {
                         echo '<div class="pagination">';
+
+                        // Filter, Search, and Sort parameters
+                        $currentSearch = isset($_GET['search']) ? $_GET['search'] : '';
+                        $currentFilter = isset($_GET['filter-alum-status']) ? $_GET['filter-alum-status'] : '';
+                        $currentSort = isset($_GET['sort']) ? $_GET['sort'] : '';
+                        $currentOrder = isset($_GET['order']) ? $_GET['order'] : '';                        
+
                         // Reconstruct current URL parameters
-                        $sortParams = "&sort=$sort_column_key&order=$sort_order&search=$search_term";
+                        $sortParams = "&sort=$currentSort&order=$currentOrder&search=$currentSearch&filter-alum-status=$currentFilter";
                         
                         if ($currentPage > 1) {
                             $prevPage = $currentPage - 1;
