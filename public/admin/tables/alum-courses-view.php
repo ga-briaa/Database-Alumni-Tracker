@@ -20,7 +20,6 @@
     $filter_degree = isset($_GET['degree-id']) ? $_GET['degree-id'] : '';
     $filter_program = isset($_GET['program-id']) ? $_GET['program-id'] : '';
     $filter_grad_year = isset($_GET['grad-year']) ? $_GET['grad-year'] : '';
-    $search_sql = "";
 
     // WHERE clause for search and filter
     $sql_where= "";

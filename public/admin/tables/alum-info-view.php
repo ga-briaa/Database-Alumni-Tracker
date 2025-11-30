@@ -19,7 +19,6 @@ if ($currentPage < 1) $currentPage = 1;
 // Search and Filter function
 $search_term = isset($_GET['search']) ? $_GET['search'] : '';
 $filter_status = isset($_GET['filter-alum-status']) ? $_GET['filter-alum-status'] : '';
-$search_sql = "";
 
 // WHERE clause for search and filter
 $sql_where= "";
