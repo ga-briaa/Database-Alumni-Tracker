@@ -76,12 +76,19 @@
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 12px 8px;
+
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#view-table-select:hover {
+    border-color: #f4a126;
 }
 
 /* Focus state for the table selection dropdown */
 #view-table-select:focus {
-    outline: 2px solid #8D1436;
+    outline: none;
     border-color: #8D1436;
+    box-shadow: 0 0 0 1px #8D1436;
 }
 
 /* Search Bar Section */
@@ -101,19 +108,23 @@
     border-radius: 4px;
     width: 300px; /* Comfortable width for typing */
     background-color: #fff;
-    color: #333;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    /* color: #333; */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search-box:hover {
+    border-color: #f4a126;
 }
 
 /* Focus state for the search input box */
-#filter-search-box:focus {
+#search-box:focus {
     outline: none;
     border-color: #8D1436;
     box-shadow: 0 0 0 1px #8D1436;
 }
 
 /* Placeholder text for the search input box */
-#filter-search-box::placeholder {
+#search-box::placeholder {
     color: #999;
     font-weight: normal;
 }
