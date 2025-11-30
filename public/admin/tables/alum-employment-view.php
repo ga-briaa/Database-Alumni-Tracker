@@ -16,24 +16,72 @@
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     if ($currentPage < 1) $currentPage = 1;
 
-    // Search function
+    // Search and Filter function
     $search_term = isset($_GET['search']) ? $_GET['search'] : '';
-    $search_sql = "";
-    $search_params = [];
-    $search_param_types = "";
+    $filter_position = isset($_GET['position-id']) ? $_GET['position-id'] : '';
+    $filter_company = isset($_GET['company-id']) ? $_GET['company-id'] : '';
+    $filter_location = isset($_GET['location-id']) ? $_GET['location-id'] : '';
+    $filter_start_date = isset($_GET['start-date']) ? $_GET['start-date'] : '';
+    $filter_end_date = isset($_GET['end-date']) ? $_GET['end-date'] : '';
+
+    // WHERE clause for search and filter
+    $sql_where= "";
+    $where_clauses = [];
+    $params = [];
+    $types = "";
+
+    if (!empty($filter_position)) {
+        $sql_where .= (empty($sql_where) ? " WHERE " : " AND ") . "employment.Position_ID = ?";
+        $params[] = $filter_position;
+        $types .= "s";
+    }
+
+    if (!empty($filter_company)) {
+        $sql_where .= (empty($sql_where) ? " WHERE " : " AND ") . "employment.Company_ID = ?";
+        $params[] = $filter_company;
+        $types .= "s";
+    }
+
+    if (!empty($filter_location)) {
+        $sql_where .= (empty($sql_where) ? " WHERE " : " AND ") . "employment.Location_ID = ?";
+        $params[] = $filter_location;
+        $types .= "s";
+    }
+
+    if (!empty($filter_start_date)) {
+        $sql_where .= (empty($sql_where) ? " WHERE " : " AND ") . "employment.Start_Date >= ?";
+        $params[] = $filter_start_date;
+        $types .= "s";
+    }
+
+    if (!empty($filter_end_date)) {
+        $sql_where .= (empty($sql_where) ? " WHERE " : " AND ") . "employment.End_Date <= ?";
+        $params[] = $filter_end_date;
+        $types .= "s";
+    }
 
     if (!empty($search_term)) {
         $search_like = "%" . $search_term . "%";
-        $search_sql = " WHERE (alumni.Alum_ID LIKE ? 
+        $where_clauses[] = "(alumni.Alum_ID LIKE ? 
                         OR alumni.Alum_FirstName LIKE ? 
                         OR alumni.Alum_LastName LIKE ? 
                         OR job_position.Position_Name LIKE ? 
                         OR company.Company_Name LIKE ? 
                         OR location.City LIKE ?
                         OR location.Country LIKE ?)";
-        
-        $search_params = [$search_like, $search_like, $search_like, $search_like, $search_like, $search_like, $search_like];
-        $search_param_types = "sssssss";
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $types .= "sssssss";
+    }
+
+    // Combine WHERE parameters
+    if (count($where_clauses) > 0) {
+        $sql_where = " WHERE " . implode(" AND ", $where_clauses);
     }
 
     // Count Query
@@ -42,12 +90,11 @@
                  INNER JOIN job_position ON employment.Position_ID = job_position.Position_ID
                  INNER JOIN company ON employment.Company_ID = company.Company_ID
                  INNER JOIN `location` ON employment.Location_ID = location.Location_ID"
-                 . $search_sql;
-
+                 . $sql_where;
     $stmt_count = $conn->prepare($countSql);
 
-    if (!empty($search_params)) {
-        $stmt_count->bind_param($search_param_types, ...$search_params);
+    if (!empty($params)) {
+        $stmt_count->bind_param($types, ...$params);
     }
 
     $stmt_count->execute();
@@ -85,19 +132,15 @@
                 company ON employment.Company_ID = company.Company_ID
             INNER JOIN
                 `location` ON employment.Location_ID = location.Location_ID"
-            . $search_sql // Add the WHERE clause
+            . $sql_where // Add the WHERE clause
             . " ORDER BY $sort_column $sort_order LIMIT ?, ?";
 
+    $params[] = $startRow;
+    $params[] = $rowPerPage;
+    $types .= "ii";
+
     $stmt = $conn->prepare($sql);
-    
-    $all_params = $search_params;
-    $all_param_types = $search_param_types;
-
-    $all_params[] = $startRow;
-    $all_params[] = $rowPerPage;
-    $all_param_types .= "ii";
-
-    $stmt->bind_param($all_param_types, ...$all_params);
+    $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
 

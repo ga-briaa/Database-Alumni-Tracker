@@ -203,8 +203,7 @@ if ($alumni_result->num_rows > 0) {
                         </div>
                     <?php
                     }
-                    ?>
-                <?php 
+
                 // --- 2. FILTER ALUMNI COURSES MODAL ---
                 } elseif ($selected_table == 'alumni-courses') {
                 ?>
@@ -290,8 +289,98 @@ if ($alumni_result->num_rows > 0) {
                         </div>
                     <?php
                     }
+
+                // --- 3. FILTER ALUMNI EMPLOYMENT MODAL ---
+                } elseif ($selected_table == 'alumni-employment') {
+                ?>
+                <div class='filter-table'>
+                        <button class='myBtn btn-modal-trigger' data-target='filterModal-employment'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                            </svg>
+                        </button>
+                        <div class='modal' id='filterModal-employment'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h2>Filter Alumni Employment</h2>
+                                    <span class='close'>&times;</span>
+                                </div>
+
+                                <form id='filter-form-employment' action='' method='GET'>
+                                    <div class='modal-body modal-form-grid'>
+                                        <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                                        <?php if(isset($_GET['search'])): ?>
+                                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                        <?php endif; ?>
+
+                                        <label for='filter-position-id'>Position:</label>
+                                        <select id='filter-position-id' name='position-id' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Position --</option>
+                                            <?php
+                                            foreach ($all_positions as $position) {
+                                                echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+
+                                        <label for='filter-company-id'>Company:</label>
+                                        <select id='filter-company-id' name='company-id' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Company --</option>
+                                            <?php
+                                            foreach ($all_companies as $company) {
+                                                echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+
+                                        <label for='filter-location-id'>Location:</label>
+                                        <select id='filter-location-id' name='location-id' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Location --</option>
+                                            <?php
+                                            foreach ($all_locations as $location) {
+                                                echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+
+                                        <!-- <label for='filter-start-date'>Start Date:</label>
+                                        <input type='date' id='filter-start-date' name='start-date' class='modal-input-field'>
+
+                                        <label for='filter-end-date'>End Date:</label>
+                                        <input type='date' id='filter-end-date' name='end-date' class='modal-input-field'> -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn-apply" type="submit" form="filter-form-employment">Apply Filter</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REMOVE FILTER -->
+                    <?php
+                    $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                    $hasPositionFilter = isset($_GET['position-id']) && !empty($_GET['position-id']);
+                    $hasCompanyFilter = isset($_GET['company-id']) && !empty($_GET['company-id']);
+                    $hasLocationFilter = isset($_GET['location-id']) && !empty($_GET['location-id']);
+                    // $hasStartDateFilter = isset($_GET['start-date']) && !empty($_GET['start-date']);
+                    // $hasEndDateFilter = isset($_GET['end-date']) && !empty($_GET['end-date']);
+
+                    if ($hasSearch || $hasPositionFilter || $hasCompanyFilter || $hasLocationFilter) {
                     ?>
-                <?php
+                        <div class='remove-filter'>
+                            <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                class='myBtn'
+                                title='Remove Filters and Search'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php
+                    }
                 }
                 ?>
 
@@ -412,9 +501,9 @@ if ($alumni_result->num_rows > 0) {
                                         <form id='add-form-employment' action='<?php echo BASE_URL; ?>admin/data/add-alum-employment.php' method='POST'>
                                             <div class='modal-body modal-form-grid'>
                                                 
-                                                <label for='add-alum-id-employment'>Alum:</label>
+                                                <label for='add-alum-id-employment'>Alumni:</label>
                                                 <select id='add-alum-id-employment' name='alum-id' required class='modal-input-field'>
-                                                    <option value="" disabled selected>Select an Alum...</option>
+                                                    <option value="" disabled selected>Select an Alumni...</option>
                                                     <?php
                                                     foreach ($all_alumni as $alum) {
                                                         $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
@@ -561,6 +650,11 @@ if ($alumni_result->num_rows > 0) {
                         $filterDegree = isset($_GET['degree-id']) ? $_GET['degree-id'] : '';
                         $filterProgram = isset($_GET['program-id']) ? $_GET['program-id'] : '';
                         $filterGradYear = isset($_GET['grad-year']) ? $_GET['grad-year'] : '';
+                        $filterPosition = isset($_GET['position-id']) ? $_GET['position-id'] : '';
+                        $filterCompany = isset($_GET['company-id']) ? $_GET['company-id'] : '';
+                        $filterLocation = isset($_GET['location-id']) ? $_GET['location-id'] : '';
+                        $filterStartDate = isset($_GET['start-date']) ? $_GET['start-date'] : '';
+                        $filterEndDate = isset($_GET['end-date']) ? $_GET['end-date'] : '';
 
                         // Reconstruct current URL parameters
                         $sortParams = "&sort=$currentSort&order=$currentOrder&search=$currentSearch";
@@ -570,6 +664,11 @@ if ($alumni_result->num_rows > 0) {
                         if (!empty($filterDegree)) $sortParams .= "&degree-id=$filterDegree";
                         if (!empty($filterProgram)) $sortParams .= "&program-id=$filterProgram";
                         if (!empty($filterGradYear)) $sortParams .= "&grad-year=$filterGradYear";
+                        if (!empty($filterPosition)) $sortParams .= "&position-id=$filterPosition";
+                        if (!empty($filterCompany)) $sortParams .= "&company-id=$filterCompany";
+                        if (!empty($filterLocation)) $sortParams .= "&location-id=$filterLocation";
+                        if (!empty($filterStartDate)) $sortParams .= "&start-date=$filterStartDate";
+                        if (!empty($filterEndDate)) $sortParams .= "&end-date=$filterEndDate";
                         
                         if ($currentPage > 1) {
                             $prevPage = $currentPage - 1;
