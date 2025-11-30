@@ -16,30 +16,49 @@ $sort_order = isset($_GET['order']) && strtolower($_GET['order']) == 'desc' ? 'D
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($currentPage < 1) $currentPage = 1;
 
-// Search function
+// Search and Filter function
 $search_term = isset($_GET['search']) ? $_GET['search'] : '';
+$filter_status = isset($_GET['filter-alum-status']) ? $_GET['filter-alum-status'] : '';
 $search_sql = "";
-$search_params = [];
-$search_param_types = "";
+
+// WHERE clause for search and filter
+$sql_where= "";
+$where_clauses = [];
+$params = [];
+$types = "";
+
+if (!empty($filter_status)) {
+    $where_clauses[] = "alumni.Status_ID = ?";
+    $params[] = $filter_status;
+    $types .= "s";
+}
 
 if (!empty($search_term)) {
     $search_like = "%" . $search_term . "%";
-    $search_sql = " WHERE (alumni.Alum_ID LIKE ? 
+    $where_clauses[] = "(alumni.Alum_ID LIKE ? 
                       OR alumni.Alum_FirstName LIKE ? 
                       OR alumni.Alum_LastName LIKE ? 
                       OR alumni.Alum_ContactInfo LIKE ? 
                       OR status.Status_Name LIKE ?)";
-    
-    $search_params = [$search_like, $search_like, $search_like, $search_like, $search_like];
-    $search_param_types = "sssss";
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $types .= "sssss";
+}
+
+// Combine WHERE parameters
+if (count($where_clauses) > 0) {
+    $sql_where = " WHERE " . implode(" AND ", $where_clauses);
 }
 
 $countSql = "SELECT COUNT(*) FROM alumni 
-             INNER JOIN status ON alumni.Status_ID = status.Status_ID" . $search_sql;
+             INNER JOIN status ON alumni.Status_ID = status.Status_ID" . $sql_where;
 $stmt_count = $conn->prepare($countSql);
 
-if (!empty($search_params)) {
-    $stmt_count->bind_param($search_param_types, ...$search_params);
+if (!empty($params)) {
+    $stmt_count->bind_param($types, ...$params);
 }
 
 $stmt_count->execute();
@@ -54,19 +73,15 @@ $startRow = ($currentPage - 1) * $rowPerPage;
 
 $sql = "SELECT * FROM alumni 
         INNER JOIN status ON alumni.Status_ID = status.Status_ID"
-       . $search_sql // Add the WHERE clause
+       . $sql_where // Add the WHERE clause
        . " ORDER BY $sort_column $sort_order LIMIT ?, ?";
 
+$params[] = $startRow;
+$params[] = $rowPerPage;
+$types .= "ii";
+
 $stmt = $conn->prepare($sql);
-
-$all_params = $search_params;
-$all_param_types = $search_param_types;
-
-$all_params[] = $startRow;
-$all_params[] = $rowPerPage;
-$all_param_types .= "ii";
-
-$stmt->bind_param($all_param_types, ...$all_params);
+$stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
