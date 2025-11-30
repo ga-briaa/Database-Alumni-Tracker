@@ -15,33 +15,67 @@
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     if ($currentPage < 1) $currentPage = 1;
 
-    // Search function
+    // Search and Filter function
     $search_term = isset($_GET['search']) ? $_GET['search'] : '';
+    $filter_degree = isset($_GET['degree-id']) ? $_GET['degree-id'] : '';
+    $filter_program = isset($_GET['program-id']) ? $_GET['program-id'] : '';
+    $filter_grad_year = isset($_GET['grad-year']) ? $_GET['grad-year'] : '';
     $search_sql = "";
-    $search_params = [];
-    $search_param_types = "";
+
+    // WHERE clause for search and filter
+    $sql_where= "";
+    $where_clauses = [];
+    $params = [];
+    $types = "";
+
+    if (!empty($filter_degree)) {
+        $where_clauses[] = "graduation.Degree_ID = ?";
+        $params[] = $filter_degree;
+        $types .= "s";
+    }
+
+    if (!empty($filter_program)) {
+        $where_clauses[] = "graduation.Program_ID = ?";
+        $params[] = $filter_program;
+        $types .= "s";
+    }
+
+    if (!empty($filter_grad_year)) {
+        $where_clauses[] = "graduation.Grad_Year = ?";
+        $params[] = $filter_grad_year;
+        $types .= "s";
+    }
 
     if (!empty($search_term)) {
         $search_like = "%" . $search_term . "%";
-        $search_sql = " WHERE (alumni.Alum_ID LIKE ? 
+        $where_clauses[] = "(alumni.Alum_ID LIKE ? 
                         OR alumni.Alum_FirstName LIKE ? 
                         OR alumni.Alum_LastName LIKE ? 
                         OR graduation.Degree_ID LIKE ? 
                         OR graduation.Program_ID LIKE ? 
                         OR graduation.Grad_Year LIKE ?)";
-        
-        $search_params = [$search_like, $search_like, $search_like, $search_like, $search_like, $search_like];
-        $search_param_types = "ssssss";
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $params[] = $search_like;
+        $types .= "ssssss";
+    }
+
+    // Combine WHERE parameters
+    if (count($where_clauses) > 0) {
+        $sql_where = " WHERE " . implode(" AND ", $where_clauses);
     }
 
     $countSql = "SELECT COUNT(*) FROM graduation
              INNER JOIN alumni ON graduation.Alum_ID = alumni.Alum_ID
              INNER JOIN program ON graduation.Program_ID = program.Program_ID"
-             . $search_sql;
+             . $sql_where;
     $stmt_count = $conn->prepare($countSql);
 
-    if (!empty($search_params)) {
-        $stmt_count->bind_param($search_param_types, ...$search_params);
+    if (!empty($params)) {
+        $stmt_count->bind_param($types, ...$params);
     }
 
     $stmt_count->execute();
@@ -62,19 +96,15 @@
                 alumni ON graduation.Alum_ID = alumni.Alum_ID
             INNER JOIN
                 program ON graduation.Program_ID = program.Program_ID"
-            . $search_sql // Add the WHERE clause
+            . $sql_where // Add the WHERE clause
             . " ORDER BY $sort_column $sort_order LIMIT ?, ?";
 
+    $params[] = $startRow;
+    $params[] = $rowPerPage;
+    $types .= "ii";
+
     $stmt = $conn->prepare($sql);
-    
-    $all_params = $search_params;
-    $all_param_types = $search_param_types;
-
-    $all_params[] = $startRow;
-    $all_params[] = $rowPerPage;
-    $all_param_types .= "ii";
-
-    $stmt->bind_param($all_param_types, ...$all_params);
+    $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
 

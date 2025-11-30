@@ -168,6 +168,7 @@ if ($alumni_result->num_rows > 0) {
 
                                         <label for='filter-alum-status'>Status:</label>
                                         <select id='filter-alum-status' name='filter-alum-status' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Status --</option>
                                             <?php
                                             foreach ($all_statuses as $status) {
                                                 echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
@@ -186,9 +187,9 @@ if ($alumni_result->num_rows > 0) {
                     <!-- REMOVE FILTER -->
                      <?php
                      $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
-                     $hasFilter = isset($_GET['filter-alum-status']) && !empty($_GET['filter-alum-status']);
+                     $hasStatusFilter = isset($_GET['filter-alum-status']) && !empty($_GET['filter-alum-status']);
 
-                     if ($hasSearch || $hasFilter) {
+                     if ($hasSearch || $hasStatusFilter) {
                     ?>
                         <div class='remove-filter'>
                             <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
@@ -204,6 +205,93 @@ if ($alumni_result->num_rows > 0) {
                     }
                     ?>
                 <?php 
+                // --- 2. FILTER ALUMNI COURSES MODAL ---
+                } elseif ($selected_table == 'alumni-courses') {
+                ?>
+                    <div class='filter-table'>
+                        <button class='myBtn btn-modal-trigger' data-target='filterModal-courses'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                            </svg>
+                        </button>
+                        <div class='modal' id='filterModal-courses'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h2>Filter Alumni Courses</h2>
+                                    <span class='close'>&times;</span>
+                                </div>
+
+                                <form id='filter-form-courses' action='' method='GET'>
+                                    <div class='modal-body modal-form-grid'>
+                                        <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                                        <?php if(isset($_GET['search'])): ?>
+                                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                        <?php endif; ?>
+
+                                        <label for='filter-degree-id-courses'>Degree:</label>
+                                        <select id='filter-degree-id-courses' name='degree-id' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Degree --</option>
+                                            <?php
+                                            foreach ($all_degrees as $degree) {
+                                                echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" . htmlspecialchars($degree['Degree_Name']) . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+
+                                        <label for='filter-program-id-courses'>Program:</label>
+                                        <select id='filter-program-id-courses' name='program-id' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Program --</option>
+                                            <?php
+                                            foreach ($all_programs as $program) {
+                                                echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" . htmlspecialchars($program['Program_Name']) . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+
+                                        <label for='filter-grad-year-courses'>Graduation Year:</label>
+                                        <select id='filter-grad-year-courses' name='grad-year' class='modal-input-field'>
+                                            <option value="" disabled selected>-- Select Graduation Year --</option>
+                                            <?php
+                                            $currentYear = (int)date("Y");
+                                            $earliestYear = 1970;
+                                            for ($year = $currentYear; $year >= $earliestYear; $year--) {
+                                                echo "<option value='$year'>$year</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn-apply" type="submit" form="filter-form-courses">Apply Filter</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REMOVE FILTER -->
+                    <?php
+                    $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                    $hasDegreeFilter = isset($_GET['degree-id']) && !empty($_GET['degree-id']);
+                    $hasProgramFilter = isset($_GET['program-id']) && !empty($_GET['program-id']);
+                    $hasGradYearFilter = isset($_GET['grad-year']) && !empty($_GET['grad-year']);
+
+                    if ($hasSearch || $hasDegreeFilter || $hasProgramFilter || $hasGradYearFilter) {
+                    ?>
+                        <div class='remove-filter'>
+                            <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                class='myBtn'
+                                title='Remove Filters and Search'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                <?php
                 }
                 ?>
 
@@ -262,7 +350,7 @@ if ($alumni_result->num_rows > 0) {
                                         <form id='add-form-courses' action='<?php echo BASE_URL; ?>admin/data/add-alum-courses.php' method='POST'>
                                             <div class='modal-body modal-form-grid'>
                                                 
-                                                <label for='add-alum-id-courses'>Alum:</label>
+                                                <label for='add-alum-id-courses'>Alumni:</label>
                                                 <select id='add-alum-id-courses' name='alum-id' required class='modal-input-field'>
                                                     <option value="" disabled selected>Select an Alum...</option>
                                                     <?php
@@ -291,7 +379,7 @@ if ($alumni_result->num_rows > 0) {
                                                     ?>
                                                 </select>
                                                 
-                                                <label for='add-grad-year-courses'>Grad Year:</label>
+                                                <label for='add-grad-year-courses'>Graduation Year:</label>
                                                 <select id='add-grad-year-courses' name='grad-year' required class='modal-input-field'>
                                                     <?php
                                                     $currentYear = (int)date("Y");
@@ -463,14 +551,25 @@ if ($alumni_result->num_rows > 0) {
                     if (isset($totalPages) && $totalPages > 1) {
                         echo '<div class="pagination">';
 
-                        // Filter, Search, and Sort parameters
+                        // Search, and Sort parameters
                         $currentSearch = isset($_GET['search']) ? $_GET['search'] : '';
-                        $currentFilter = isset($_GET['filter-alum-status']) ? $_GET['filter-alum-status'] : '';
                         $currentSort = isset($_GET['sort']) ? $_GET['sort'] : '';
-                        $currentOrder = isset($_GET['order']) ? $_GET['order'] : '';                        
+                        $currentOrder = isset($_GET['order']) ? $_GET['order'] : '';
+
+                        // Specific Filters
+                        $filterStatus = isset($_GET['filter-alum-status']) ? $_GET['filter-alum-status'] : '';
+                        $filterDegree = isset($_GET['degree-id']) ? $_GET['degree-id'] : '';
+                        $filterProgram = isset($_GET['program-id']) ? $_GET['program-id'] : '';
+                        $filterGradYear = isset($_GET['grad-year']) ? $_GET['grad-year'] : '';
 
                         // Reconstruct current URL parameters
-                        $sortParams = "&sort=$currentSort&order=$currentOrder&search=$currentSearch&filter-alum-status=$currentFilter";
+                        $sortParams = "&sort=$currentSort&order=$currentOrder&search=$currentSearch";
+
+                        // Append filter parameters to URL
+                        if (!empty($filterStatus)) $sortParams .= "&filter-alum-status=$filterStatus";
+                        if (!empty($filterDegree)) $sortParams .= "&degree-id=$filterDegree";
+                        if (!empty($filterProgram)) $sortParams .= "&program-id=$filterProgram";
+                        if (!empty($filterGradYear)) $sortParams .= "&grad-year=$filterGradYear";
                         
                         if ($currentPage > 1) {
                             $prevPage = $currentPage - 1;
