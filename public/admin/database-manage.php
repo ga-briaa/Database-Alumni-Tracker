@@ -141,478 +141,537 @@ if ($alumni_result->num_rows > 0) {
                         </form>
                     </div>
 
-                                    <?php
-                // --- 1. FILTER ALUMNI INFO MODAL ---
-                if ($selected_table == 'alumni-info') {
-                ?>
-                    <div class='filter-table'>
-                        <button class='myBtn btn-modal-trigger' data-target='filterModal-info'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
-                            </svg>
-                        </button>
-                        <div class='modal' id='filterModal-info'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h2>Filter Alumni Information</h2>
-                                    <span class='close'>&times;</span>
-                                </div>
-
-                                <form id='filter-form-info' action='' method='GET'>
-                                    <div class='modal-body modal-form-grid'>
-                                        <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
-
-                                        <?php if(isset($_GET['search'])): ?>
-                                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
-                                        <?php endif; ?>
-
-                                        <label for='filter-alum-status'>Status:</label>
-                                        <select id='filter-alum-status' name='filter-alum-status' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Status --</option>
-                                            <?php
-                                            foreach ($all_statuses as $status) {
-                                                echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn-apply" type="submit" form="filter-form-info">Apply Filter</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- REMOVE FILTER -->
-                     <?php
-                     $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
-                     $hasStatusFilter = isset($_GET['filter-alum-status']) && !empty($_GET['filter-alum-status']);
-
-                     if ($hasSearch || $hasStatusFilter) {
+                    <?php
+                    // --- 1. FILTER ALUMNI INFO MODAL ---
+                    if ($selected_table == 'alumni-info') {
                     ?>
-                        <div class='remove-filter'>
-                            <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
-                                class='myBtn'
-                                title='Remove Filters and Search'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                        <div class='filter-table'>
+                            <button class='myBtn btn-modal-trigger' data-target='filterModal-info'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                                 </svg>
-                            </a>
-                        </div>
-                    <?php
-                    }
-
-                // --- 2. FILTER ALUMNI COURSES MODAL ---
-                } elseif ($selected_table == 'alumni-courses') {
-                ?>
-                    <div class='filter-table'>
-                        <button class='myBtn btn-modal-trigger' data-target='filterModal-courses'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
-                            </svg>
-                        </button>
-                        <div class='modal' id='filterModal-courses'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h2>Filter Alumni Courses</h2>
-                                    <span class='close'>&times;</span>
-                                </div>
-
-                                <form id='filter-form-courses' action='' method='GET'>
-                                    <div class='modal-body modal-form-grid'>
-                                        <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
-
-                                        <?php if(isset($_GET['search'])): ?>
-                                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
-                                        <?php endif; ?>
-
-                                        <label for='filter-degree-id-courses'>Degree:</label>
-                                        <select id='filter-degree-id-courses' name='degree-id' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Degree --</option>
-                                            <?php
-                                            foreach ($all_degrees as $degree) {
-                                                echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" . htmlspecialchars($degree['Degree_Name']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-
-                                        <label for='filter-program-id-courses'>Program:</label>
-                                        <select id='filter-program-id-courses' name='program-id' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Program --</option>
-                                            <?php
-                                            foreach ($all_programs as $program) {
-                                                echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" . htmlspecialchars($program['Program_Name']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-
-                                        <label for='filter-grad-year-courses'>Graduation Year:</label>
-                                        <select id='filter-grad-year-courses' name='grad-year' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Graduation Year --</option>
-                                            <?php
-                                            $currentYear = (int)date("Y");
-                                            $earliestYear = 1970;
-                                            for ($year = $currentYear; $year >= $earliestYear; $year--) {
-                                                echo "<option value='$year'>$year</option>";
-                                            }
-                                            ?>
-                                        </select>
+                            </button>
+                            <div class='modal' id='filterModal-info'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Filter Alumni Information</h2>
+                                        <span class='close'>&times;</span>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button class="btn-apply" type="submit" form="filter-form-courses">Apply Filter</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- REMOVE FILTER -->
-                    <?php
-                    $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
-                    $hasDegreeFilter = isset($_GET['degree-id']) && !empty($_GET['degree-id']);
-                    $hasProgramFilter = isset($_GET['program-id']) && !empty($_GET['program-id']);
-                    $hasGradYearFilter = isset($_GET['grad-year']) && !empty($_GET['grad-year']);
+                                    <form id='filter-form-info' action='' method='GET'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
 
-                    if ($hasSearch || $hasDegreeFilter || $hasProgramFilter || $hasGradYearFilter) {
-                    ?>
-                        <div class='remove-filter'>
-                            <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
-                                class='myBtn'
-                                title='Remove Filters and Search'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                                </svg>
-                            </a>
-                        </div>
-                    <?php
-                    }
+                                            <?php if(isset($_GET['search'])): ?>
+                                            <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                            <?php endif; ?>
 
-                // --- 3. FILTER ALUMNI EMPLOYMENT MODAL ---
-                } elseif ($selected_table == 'alumni-employment') {
-                ?>
-                <div class='filter-table'>
-                        <button class='myBtn btn-modal-trigger' data-target='filterModal-employment'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-                                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
-                            </svg>
-                        </button>
-                        <div class='modal' id='filterModal-employment'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h2>Filter Alumni Employment</h2>
-                                    <span class='close'>&times;</span>
-                                </div>
-
-                                <form id='filter-form-employment' action='' method='GET'>
-                                    <div class='modal-body modal-form-grid'>
-                                        <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
-
-                                        <?php if(isset($_GET['search'])): ?>
-                                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
-                                        <?php endif; ?>
-
-                                        <label for='filter-position-id'>Position:</label>
-                                        <select id='filter-position-id' name='position-id' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Position --</option>
-                                            <?php
-                                            foreach ($all_positions as $position) {
-                                                echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-
-                                        <label for='filter-company-id'>Company:</label>
-                                        <select id='filter-company-id' name='company-id' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Company --</option>
-                                            <?php
-                                            foreach ($all_companies as $company) {
-                                                echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-
-                                        <label for='filter-location-id'>Location:</label>
-                                        <select id='filter-location-id' name='location-id' class='modal-input-field'>
-                                            <option value="" disabled selected>-- Select Location --</option>
-                                            <?php
-                                            foreach ($all_locations as $location) {
-                                                echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-
-                                        <!-- <label for='filter-start-date'>Start Date:</label>
-                                        <input type='date' id='filter-start-date' name='start-date' class='modal-input-field'>
-
-                                        <label for='filter-end-date'>End Date:</label>
-                                        <input type='date' id='filter-end-date' name='end-date' class='modal-input-field'> -->
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn-apply" type="submit" form="filter-form-employment">Apply Filter</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- REMOVE FILTER -->
-                    <?php
-                    $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
-                    $hasPositionFilter = isset($_GET['position-id']) && !empty($_GET['position-id']);
-                    $hasCompanyFilter = isset($_GET['company-id']) && !empty($_GET['company-id']);
-                    $hasLocationFilter = isset($_GET['location-id']) && !empty($_GET['location-id']);
-                    // $hasStartDateFilter = isset($_GET['start-date']) && !empty($_GET['start-date']);
-                    // $hasEndDateFilter = isset($_GET['end-date']) && !empty($_GET['end-date']);
-
-                    if ($hasSearch || $hasPositionFilter || $hasCompanyFilter || $hasLocationFilter) {
-                    ?>
-                        <div class='remove-filter'>
-                            <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
-                                class='myBtn'
-                                title='Remove Filters and Search'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                                </svg>
-                            </a>
-                        </div>
-                    <?php
-                    }
-                }
-                ?>
-
-                        <?php
-                        // --- 1. ALUMNI INFO MODAL ---
-                        if ($selected_table == 'alumni-info') {
-                        ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-info'>+ Add Data</button>
-                                <div class='modal' id='addModal-info'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h2>Add New Alumni</h2>
-                                            <span class='close'>&times;</span>
+                                            <label for='filter-alum-status'>Status:</label>
+                                            <select id='filter-alum-status' name='filter-alum-status' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Status --</option>
+                                                <?php
+                                                foreach ($all_statuses as $status) {
+                                                    echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
-                                        <form id='add-form-info' action='<?php echo BASE_URL; ?>admin/data/add-alum-info.php' method='POST'>
-                                            <div class='modal-body modal-form-grid'>
-                                                <label for='add-alum-id'>ID:</label>
-                                                <input type='text' id='add-alum-id' name='alum-id' required pattern='^\d{4}-\d{5}$' title='ID must be in the format XXXX-XXXXX (e.g., 2025-12345)' maxlength='10' class='modal-input-field'>
-                                                <label for='add-alum-firstName'>First Name:</label>
-                                                <input type='text' id='add-alum-firstName' name='alum-firstName' required maxlength='50' class='modal-input-field'>
-                                                <label for='add-alum-lastName'>Last Name:</label>
-                                                <input type='text' id='add-alum-lastName' name='alum-lastName' required maxlength='50' class='modal-input-field'>
-                                                <label for='add-alum-contactInfo'>Email:</label>
-                                                <input type='email' id='add-alum-contactInfo' name='alum-contactInfo' required maxlength='30' class='modal-input-field' pattern='[^@\s]+@[^@\s]+'>
-                                                <label for='add-alum-status'>Status:</label>
-                                                <select id='add-alum-status' name='alum-status' class='modal-input-field'>
-                                                    <?php
-                                                    foreach ($all_statuses as $status) {
-                                                        echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn-apply" type="submit" form="add-form-info">Add Alumni</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?php
-                        // --- 2. ALUMNI COURSES MODAL ---
-                        } elseif ($selected_table == 'alumni-courses') {
-                        ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-courses'>+ Add Data</button>
-            
-                                <div class='modal' id='addModal-courses'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h2>Add Graduation Record</h2>
-                                            <span class='close'>&times;</span>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="filter-form-info">Apply Filter</button>
                                         </div>
-                                        <form id='add-form-courses' action='<?php echo BASE_URL; ?>admin/data/add-alum-courses.php' method='POST'>
-                                            <div class='modal-body modal-form-grid'>
-                                                
-                                                <label for='add-alum-id-courses'>Alumni:</label>
-                                                <select id='add-alum-id-courses' name='alum-id' required class='modal-input-field'>
-                                                    <option value="" disabled selected>Select an Alum...</option>
-                                                    <?php
-                                                    foreach ($all_alumni as $alum) {
-                                                        $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
-                                                        echo "<option value='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                                
-                                                <label for='add-degree-id-courses'>Degree:</label>
-                                                <select id='add-degree-id-courses' name='degree-id' required class='modal-input-field'>
-                                                    <?php
-                                                    foreach ($all_degrees as $degree) {
-                                                        echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" . htmlspecialchars($degree['Degree_Name']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-
-                                                <label for='add-program-id-courses'>Program:</label>
-                                                <select id='add-program-id-courses' name='program-id' required class='modal-input-field'>
-                                                    <?php
-                                                    foreach ($all_programs as $program) {
-                                                        echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" . htmlspecialchars($program['Program_Name']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                                
-                                                <label for='add-grad-year-courses'>Graduation Year:</label>
-                                                <select id='add-grad-year-courses' name='grad-year' required class='modal-input-field'>
-                                                    <?php
-                                                    $currentYear = (int)date("Y");
-                                                    $earliestYear = 1970;
-                                                    for ($year = $currentYear; $year >= $earliestYear; $year--) {
-                                                        echo "<option value='$year'>$year</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn-apply" type="submit" form="add-form-courses">Add Record</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- REMOVE FILTER -->
                         <?php
-                        // --- 3. ALUMNI EMPLOYMENT MODAL ---
-                        } elseif ($selected_table == 'alumni-employment') {
+                        $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                        $hasStatusFilter = isset($_GET['filter-alum-status']) && !empty($_GET['filter-alum-status']);
+
+                        if ($hasSearch || $hasStatusFilter) {
                         ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-employment'>+ Add Data</button>
-                                <div class='modal' id='addModal-employment'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h2>Add New Employment Record</h2>
-                                            <span class='close'>&times;</span>
-                                        </div>
-                                        <form id='add-form-employment' action='<?php echo BASE_URL; ?>admin/data/add-alum-employment.php' method='POST'>
-                                            <div class='modal-body modal-form-grid'>
-                                                
-                                                <label for='add-alum-id-employment'>Alumni:</label>
-                                                <select id='add-alum-id-employment' name='alum-id' required class='modal-input-field'>
-                                                    <option value="" disabled selected>Select an Alumni...</option>
-                                                    <?php
-                                                    foreach ($all_alumni as $alum) {
-                                                        $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
-                                                        echo "<option value='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-
-                                                <label for='add-position-id'>Position:</label>
-                                                <select id='add-position-id' name='position-id' required class='modal-input-field'>
-                                                    <?php
-                                                    foreach ($all_positions as $position) {
-                                                        echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-
-                                                <label for='add-company-id'>Company:</label>
-                                                <select id='add-company-id' name='company-id' required class='modal-input-field'>
-                                                    <?php
-                                                    foreach ($all_companies as $company) {
-                                                        echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-
-                                                <label for='add-location-id'>Location:</label>
-                                                <select id='add-location-id' name='location-id' required class='modal-input-field'>
-                                                    <?php
-                                                    foreach ($all_locations as $location) {
-                                                        echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-
-                                                <label for='add-start-date'>Start Date:</label>
-                                                <input type='date' id='add-start-date' name='start-date' required class='modal-input-field'>
-
-                                                <label for='add-end-date'>End Date:</label>
-                                                <div class="input-wrapper">
-                                                    <input type='date' id='add-end-date' name='end-date' title="Leave empty if Current" class='modal-input-field'>
-                                                    <span class="input-hint">Leave empty if Current</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn-apply" type="submit" form="add-form-employment">Add Record</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php
-                        } elseif ($selected_table == 'program') {
-                        ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-program'>+ Add Data</button>
-                                <div class='modal' id='addModal-program'>
-                                    <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h2>Add New Program</h2>
-                                            <span class='close'>&times;</span>
-                                        </div>
-                                        <form id='add-form-program' action='<?php echo BASE_URL; ?>admin/data/add-program.php' method='POST'>
-                                            <div class='modal-body modal-form-grid'>
-                                                <label for='add-program-id'>Program ID:</label>
-                                                <input type='text' id='add-program-id' name='program-id' required maxlength='10' class='modal-input-field'>
-                                                <label for='add-program-name'>Program Name:</label>
-                                                <input type='text' id='add-program-name' name='program-name' required maxlength='40' class='modal-input-field'>
-                                                <label for='add-program-college'>College:</label>
-                                                <select id='add-program-college' name='program-college' class='modal-input-field'>
-                                                    <?php
-                                                    // This will be populated from the $all_colleges array fetched above
-                                                    foreach ($all_colleges as $college) {
-                                                        echo "<option value='" . htmlspecialchars($college['College_ID']) . "'>" . htmlspecialchars($college['College_Name']) . "</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn-apply" type="submit" form="add-form-program">Add Program</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php
-                        } elseif ($selected_table == 'college') {
-                        ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-college'>+ Add Data</button>
-                            </div>
-                        <?php
-                        } elseif ($selected_table == 'degree') {
-                        ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-degree'>+ Add Data</button>
-                            </div>
-                        <?php
-                        } elseif ($selected_table == 'status') {
-                        ?>
-                            <div class='add-data'>
-                                <button class='myBtn btn-modal-trigger' data-target='addModal-status'>+ Add Data</button>
+                            <div class='remove-filter'>
+                                <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                    class='myBtn'
+                                    title='Remove Filters and Search'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                    </svg>
+                                </a>
                             </div>
                         <?php
                         }
-                        ?>
 
-                        <?php } ?>
+                    // --- 2. FILTER ALUMNI COURSES MODAL ---
+                    } elseif ($selected_table == 'alumni-courses') {
+                    ?>
+                        <div class='filter-table'>
+                            <button class='myBtn btn-modal-trigger' data-target='filterModal-courses'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg>
+                            </button>
+                            <div class='modal' id='filterModal-courses'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Filter Alumni Courses</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+
+                                    <form id='filter-form-courses' action='' method='GET'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                                            <?php if(isset($_GET['search'])): ?>
+                                            <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                            <?php endif; ?>
+
+                                            <label for='filter-degree-id-courses'>Degree:</label>
+                                            <select id='filter-degree-id-courses' name='degree-id' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Degree --</option>
+                                                <?php
+                                                foreach ($all_degrees as $degree) {
+                                                    echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" . htmlspecialchars($degree['Degree_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='filter-program-id-courses'>Program:</label>
+                                            <select id='filter-program-id-courses' name='program-id' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Program --</option>
+                                                <?php
+                                                foreach ($all_programs as $program) {
+                                                    echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" . htmlspecialchars($program['Program_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='filter-grad-year-courses'>Graduation Year:</label>
+                                            <select id='filter-grad-year-courses' name='grad-year' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Graduation Year --</option>
+                                                <?php
+                                                $currentYear = (int)date("Y");
+                                                $earliestYear = 1970;
+                                                for ($year = $currentYear; $year >= $earliestYear; $year--) {
+                                                    echo "<option value='$year'>$year</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="filter-form-courses">Apply Filter</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REMOVE FILTER -->
+                        <?php
+                        $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                        $hasDegreeFilter = isset($_GET['degree-id']) && !empty($_GET['degree-id']);
+                        $hasProgramFilter = isset($_GET['program-id']) && !empty($_GET['program-id']);
+                        $hasGradYearFilter = isset($_GET['grad-year']) && !empty($_GET['grad-year']);
+
+                        if ($hasSearch || $hasDegreeFilter || $hasProgramFilter || $hasGradYearFilter) {
+                        ?>
+                            <div class='remove-filter'>
+                                <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                    class='myBtn'
+                                    title='Remove Filters and Search'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        <?php
+                        }
+
+                    // --- 3. FILTER ALUMNI EMPLOYMENT MODAL ---
+                    } elseif ($selected_table == 'alumni-employment') {
+                    ?>
+                    <div class='filter-table'>
+                            <button class='myBtn btn-modal-trigger' data-target='filterModal-employment'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg>
+                            </button>
+                            <div class='modal' id='filterModal-employment'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Filter Alumni Employment</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+
+                                    <form id='filter-form-employment' action='' method='GET'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                                            <?php if(isset($_GET['search'])): ?>
+                                            <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                            <?php endif; ?>
+
+                                            <label for='filter-position-id'>Position:</label>
+                                            <select id='filter-position-id' name='position-id' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Position --</option>
+                                                <?php
+                                                foreach ($all_positions as $position) {
+                                                    echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='filter-company-id'>Company:</label>
+                                            <select id='filter-company-id' name='company-id' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Company --</option>
+                                                <?php
+                                                foreach ($all_companies as $company) {
+                                                    echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='filter-location-id'>Location:</label>
+                                            <select id='filter-location-id' name='location-id' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select Location --</option>
+                                                <?php
+                                                foreach ($all_locations as $location) {
+                                                    echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <!-- <label for='filter-start-date'>Start Date:</label>
+                                            <input type='date' id='filter-start-date' name='start-date' class='modal-input-field'>
+
+                                            <label for='filter-end-date'>End Date:</label>
+                                            <input type='date' id='filter-end-date' name='end-date' class='modal-input-field'> -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="filter-form-employment">Apply Filter</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REMOVE FILTER -->
+                        <?php
+                        $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                        $hasPositionFilter = isset($_GET['position-id']) && !empty($_GET['position-id']);
+                        $hasCompanyFilter = isset($_GET['company-id']) && !empty($_GET['company-id']);
+                        $hasLocationFilter = isset($_GET['location-id']) && !empty($_GET['location-id']);
+                        // $hasStartDateFilter = isset($_GET['start-date']) && !empty($_GET['start-date']);
+                        // $hasEndDateFilter = isset($_GET['end-date']) && !empty($_GET['end-date']);
+
+                        if ($hasSearch || $hasPositionFilter || $hasCompanyFilter || $hasLocationFilter) {
+                        ?>
+                            <div class='remove-filter'>
+                                <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                    class='myBtn'
+                                    title='Remove Filters and Search'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                    // --- 4. FILTER PROGRAM MODAL ---
+                    } elseif ($selected_table == 'program') {
+                    ?>
+                        <div class='filter-table'>
+                            <button class='myBtn btn-modal-trigger' data-target='filterModal-program'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg>
+                            </button>
+                            <div class='modal' id='filterModal-program'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Filter Program</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+
+                                    <form id='filter-form-program' action='' method='GET'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <input type='hidden' name='view-table' value='<?php echo isset($_GET['view-table']) ? htmlspecialchars($_GET['view-table']) : ""; ?>'>
+
+                                            <?php if(isset($_GET['search'])): ?>
+                                            <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+                                            <?php endif; ?>
+
+                                            <label for='filter-program-college'>College:</label>
+                                            <select id='filter-program-college' name='program-college' class='modal-input-field'>
+                                                <option value="" disabled selected>-- Select College --</option>
+                                                <?php
+                                                foreach ($all_colleges as $college) {
+                                                    echo "<option value='" . htmlspecialchars($college['College_ID']) . "'>" . htmlspecialchars($college['College_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="filter-form-program">Apply Filter</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REMOVE FILTER -->
+                        <?php
+                        $hasSearch = isset($_GET['search']) && !empty($_GET['search']);
+                        $hasCollegeFilter = isset($_GET['program-college']) && !empty($_GET['program-college']);
+
+                        if ($hasSearch || $hasCollegeFilter) {
+                        ?>
+                            <div class='remove-filter'>
+                                <a href='?view-table=<?php echo htmlspecialchars($selected_table); ?>'
+                                    class='myBtn'
+                                    title='Remove Filters and Search'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                    }
+                    ?>
+
+                    <?php
+                    // --- 1. ALUMNI INFO MODAL ---
+                    if ($selected_table == 'alumni-info') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-info'>+ Add Data</button>
+                            <div class='modal' id='addModal-info'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Add New Alumni</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+                                    <form id='add-form-info' action='<?php echo BASE_URL; ?>admin/data/add-alum-info.php' method='POST'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <label for='add-alum-id'>ID:</label>
+                                            <input type='text' id='add-alum-id' name='alum-id' required pattern='^\d{4}-\d{5}$' title='ID must be in the format XXXX-XXXXX (e.g., 2025-12345)' maxlength='10' class='modal-input-field'>
+                                            <label for='add-alum-firstName'>First Name:</label>
+                                            <input type='text' id='add-alum-firstName' name='alum-firstName' required maxlength='50' class='modal-input-field'>
+                                            <label for='add-alum-lastName'>Last Name:</label>
+                                            <input type='text' id='add-alum-lastName' name='alum-lastName' required maxlength='50' class='modal-input-field'>
+                                            <label for='add-alum-contactInfo'>Email:</label>
+                                            <input type='email' id='add-alum-contactInfo' name='alum-contactInfo' required maxlength='30' class='modal-input-field' pattern='[^@\s]+@[^@\s]+'>
+                                            <label for='add-alum-status'>Status:</label>
+                                            <select id='add-alum-status' name='alum-status' class='modal-input-field'>
+                                                <?php
+                                                foreach ($all_statuses as $status) {
+                                                    echo "<option value='" . htmlspecialchars($status['Status_ID']) . "'>" . htmlspecialchars($status['Status_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="add-form-info">Add Alumni</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php
+                    // --- 2. ALUMNI COURSES MODAL ---
+                    } elseif ($selected_table == 'alumni-courses') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-courses'>+ Add Data</button>
+                            <div class='modal' id='addModal-courses'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Add Graduation Record</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+                                    <form id='add-form-courses' action='<?php echo BASE_URL; ?>admin/data/add-alum-courses.php' method='POST'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <label for='add-alum-id-courses'>Alumni:</label>
+                                            <select id='add-alum-id-courses' name='alum-id' required class='modal-input-field'>
+                                                <option value="" disabled selected>Select an Alum...</option>
+                                                <?php
+                                                foreach ($all_alumni as $alum) {
+                                                    $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
+                                                    echo "<option value='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                                    
+                                            <label for='add-degree-id-courses'>Degree:</label>
+                                            <select id='add-degree-id-courses' name='degree-id' required class='modal-input-field'>
+                                                <?php
+                                                foreach ($all_degrees as $degree) {
+                                                    echo "<option value='" . htmlspecialchars($degree['Degree_ID']) . "'>" . htmlspecialchars($degree['Degree_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='add-program-id-courses'>Program:</label>
+                                            <select id='add-program-id-courses' name='program-id' required class='modal-input-field'>
+                                                <?php
+                                                foreach ($all_programs as $program) {
+                                                    echo "<option value='" . htmlspecialchars($program['Program_ID']) . "'>" . htmlspecialchars($program['Program_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                                    
+                                            <label for='add-grad-year-courses'>Graduation Year:</label>
+                                            <select id='add-grad-year-courses' name='grad-year' required class='modal-input-field'>
+                                                <?php
+                                                $currentYear = (int)date("Y");
+                                                $earliestYear = 1970;
+                                                for ($year = $currentYear; $year >= $earliestYear; $year--) {
+                                                    echo "<option value='$year'>$year</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="add-form-courses">Add Record</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    // --- 3. ALUMNI EMPLOYMENT MODAL ---
+                    } elseif ($selected_table == 'alumni-employment') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-employment'>+ Add Data</button>
+                            <div class='modal' id='addModal-employment'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Add New Employment Record</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+                                    <form id='add-form-employment' action='<?php echo BASE_URL; ?>admin/data/add-alum-employment.php' method='POST'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <label for='add-alum-id-employment'>Alumni:</label>
+                                            <select id='add-alum-id-employment' name='alum-id' required class='modal-input-field'>
+                                                <option value="" disabled selected>Select an Alumni...</option>
+                                                <?php
+                                                foreach ($all_alumni as $alum) {
+                                                    $displayName = htmlspecialchars($alum['Alum_LastName']) . ", " . htmlspecialchars($alum['Alum_FirstName']) . " (" . htmlspecialchars($alum['Alum_ID']) . ")";
+                                                    echo "<option value='" . htmlspecialchars($alum['Alum_ID']) . "'>" . $displayName . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='add-position-id'>Position:</label>
+                                            <select id='add-position-id' name='position-id' required class='modal-input-field'>
+                                                <?php
+                                                foreach ($all_positions as $position) {
+                                                    echo "<option value='" . htmlspecialchars($position['Position_ID']) . "'>" . htmlspecialchars($position['Position_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='add-company-id'>Company:</label>
+                                            <select id='add-company-id' name='company-id' required class='modal-input-field'>
+                                                <?php
+                                                foreach ($all_companies as $company) {
+                                                    echo "<option value='" . htmlspecialchars($company['Company_ID']) . "'>" . htmlspecialchars($company['Company_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='add-location-id'>Location:</label>
+                                            <select id='add-location-id' name='location-id' required class='modal-input-field'>
+                                                <?php
+                                                foreach ($all_locations as $location) {
+                                                    echo "<option value='" . htmlspecialchars($location['Location_ID']) . "'>" . htmlspecialchars($location['City']) . ", " . htmlspecialchars($location['Country']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+
+                                            <label for='add-start-date'>Start Date:</label>
+                                            <input type='date' id='add-start-date' name='start-date' required class='modal-input-field'>
+                                            <label for='add-end-date'>End Date:</label>
+                                            <div class="input-wrapper">
+                                                <input type='date' id='add-end-date' name='end-date' title="Leave empty if Current" class='modal-input-field'>
+                                                <span class="input-hint">Leave empty if Current</span>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="add-form-employment">Add Record</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    // --- 4. PROGRAM MODAL ---
+                    } elseif ($selected_table == 'program') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-program'>+ Add Data</button>
+                            <div class='modal' id='addModal-program'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h2>Add New Program</h2>
+                                        <span class='close'>&times;</span>
+                                    </div>
+                                    <form id='add-form-program' action='<?php echo BASE_URL; ?>admin/data/add-program.php' method='POST'>
+                                        <div class='modal-body modal-form-grid'>
+                                            <label for='add-program-id'>Program ID:</label>
+                                            <input type='text' id='add-program-id' name='program-id' required maxlength='10' class='modal-input-field'>
+                                            <label for='add-program-name'>Program Name:</label>
+                                            <input type='text' id='add-program-name' name='program-name' required maxlength='40' class='modal-input-field'>
+                                            <label for='add-program-college'>College:</label>
+                                            <select id='add-program-college' name='program-college' class='modal-input-field'>
+                                                <?php
+                                                // This will be populated from the $all_colleges array fetched above
+                                                foreach ($all_colleges as $college) {
+                                                    echo "<option value='" . htmlspecialchars($college['College_ID']) . "'>" . htmlspecialchars($college['College_Name']) . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn-apply" type="submit" form="add-form-program">Add Program</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    // --- 5. COLLEGE MODAL ---
+                    } elseif ($selected_table == 'college') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-college'>+ Add Data</button>
+                        </div>
+                    <?php
+                    // --- 6. DEGREE MODAL ---
+                    } elseif ($selected_table == 'degree') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-degree'>+ Add Data</button>
+                        </div>
+                    <?php
+                    // --- 7. STATUS MODAL ---
+                    } elseif ($selected_table == 'status') {
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-status'>+ Add Data</button>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                <?php } ?>
             </div>
 
             <div class="table-display">
@@ -692,7 +751,6 @@ if ($alumni_result->num_rows > 0) {
                 ?>
             </div>
         </div>
-
 
         <?php include '../../src/templates/footer.php'; ?>
         
