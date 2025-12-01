@@ -50,8 +50,8 @@
         $where_clauses[] = "(alumni.Alum_ID LIKE ? 
                         OR alumni.Alum_FirstName LIKE ? 
                         OR alumni.Alum_LastName LIKE ? 
-                        OR graduation.Degree_ID LIKE ? 
-                        OR graduation.Program_ID LIKE ? 
+                        OR degree.Degree_Abbreviation LIKE ? 
+                        OR program.Program_Name LIKE ? 
                         OR graduation.Grad_Year LIKE ?)";
         $params[] = $search_like;
         $params[] = $search_like;
@@ -69,6 +69,7 @@
 
     $countSql = "SELECT COUNT(*) FROM graduation
              INNER JOIN alumni ON graduation.Alum_ID = alumni.Alum_ID
+             INNER JOIN degree ON graduation.Degree_ID = degree.Degree_ID
              INNER JOIN program ON graduation.Program_ID = program.Program_ID"
              . $sql_where;
     $stmt_count = $conn->prepare($countSql);
@@ -93,6 +94,8 @@
                 graduation
             INNER JOIN 
                 alumni ON graduation.Alum_ID = alumni.Alum_ID
+            INNER JOIN
+                degree ON graduation.Degree_ID = degree.Degree_ID
             INNER JOIN
                 program ON graduation.Program_ID = program.Program_ID"
             . $sql_where // Add the WHERE clause
@@ -142,7 +145,7 @@
         while($row = $result->fetch_assoc()) {
             echo "<tr>
                     <td>" . htmlspecialchars($row['Alum_LastName']) . ", " . htmlspecialchars($row['Alum_FirstName']) . "<br><small>" . htmlspecialchars($row['Alum_ID']) . "</small></td>
-                    <td>" . htmlspecialchars($row['Degree_ID']) . " " . htmlspecialchars($row['Program_Name']) . "</td>
+                    <td>" . htmlspecialchars($row['Degree_Abbreviation']) . " " . htmlspecialchars($row['Program_Name']) . "</td>
                     <td>" . htmlspecialchars($row['Grad_Year']) . "</td>
                     <td class='manage-icon-cell'>
             

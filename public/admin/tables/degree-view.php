@@ -4,6 +4,7 @@ $rowPerPage = 10; // Number of rows to display per page
 // Columns that can be sorted
 $allowed_columns = [
     'id' => 'Degree_ID',
+    'abbreviation' => 'Degree_Abbreviation',
     'name' => 'Degree_Name'
 ];
 
@@ -23,6 +24,7 @@ $search_param_types = "";
 if (!empty($search_term)) {
     $search_like = "%" . $search_term . "%";
     $search_sql = " WHERE (Degree_ID LIKE ? 
+                      OR Degree_Abbreviation LIKE ?
                       OR Degree_Name LIKE ?)";
     
     $search_params = [$search_like, $search_like];
@@ -46,7 +48,7 @@ if ($currentPage > $totalPages && $totalPages > 0) {
 
 $startRow = ($currentPage - 1) * $rowPerPage;
 
-$sql = "SELECT Degree_ID, Degree_Name FROM degree"
+$sql = "SELECT Degree_ID, Degree_Abbreviation, Degree_Name FROM degree"
        . $search_sql // Add the WHERE clause
        . " ORDER BY $sort_column $sort_order LIMIT ?, ?";
 
@@ -71,7 +73,7 @@ if($result->num_rows > 0) {
 ?>
     <table>
             <tr>
-                <th colspan='3' class='table-header'>Degree Information</th>
+                <th colspan='4' class='table-header'>Degree Information</th>
             </tr>
             <tr>
                 <th>
@@ -80,6 +82,14 @@ if($result->num_rows > 0) {
                     ID
                     </a>
                 </th>
+
+                <th>
+                    <a href='<?php echo "$current_table_url&sort=abbreviation&order=" . (($sort_column_key == 'abbreviation') ? $next_order : 'ASC') . $search_url_param; ?>'
+                    class='<?php if($sort_column_key == 'abbreviation') echo "active-sort $sort_order"; ?>'>
+                    Degree Abbreviation
+                    </a>
+                </th>
+
                 <th>
                     <a href='<?php echo "$current_table_url&sort=name&order=" . (($sort_column_key == 'name') ? $next_order : 'ASC') . $search_url_param; ?>'
                     class='<?php if($sort_column_key == 'name') echo "active-sort $sort_order"; ?>'>
@@ -92,12 +102,14 @@ if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         echo "<tr>
                 <td>" . htmlspecialchars($row['Degree_ID']) . "</td>
+                <td>" . htmlspecialchars($row['Degree_Abbreviation']) . "</td>
                 <td>" . htmlspecialchars($row['Degree_Name']) . "</td>
                 <td class='manage-icon-cell'>
         
                     <button class='btn-icon btn-modal-trigger' 
                             data-target='editModal-degree'
                             data-id='" . htmlspecialchars($row['Degree_ID']) . "'
+                            data-abbreviation='" . htmlspecialchars($row['Degree_Abbreviation']) . "'
                             data-name='" . htmlspecialchars($row['Degree_Name']) . "'>
                         
                         <img class='img-default' src='" . BASE_URL . "assets/pencil-grey.png' alt='Edit'>
@@ -138,7 +150,11 @@ if($result->num_rows > 0) {
                 <input type="text" id="edit-degree-id" name="degree-id" value=""
                    required
                    maxlength="3" class='modal-input-field'>
- 
+                
+                <label for="edit-degree-abbreviation">Degree Abbreviation:</label>
+                <input type="text" id="edit-degree-abbreviation" name="degree-abbreviation" value=""
+                    required
+                    maxlength="15" class='modal-input-field'>
                 
                 <label for="edit-degree-name">Degree Name:</label>
                 <input type="text" id="edit-degree-name" name="degree-name" value=""
@@ -164,6 +180,11 @@ if($result->num_rows > 0) {
                 <input type="text" id="add-degree-id" name="degree-id" value=""
                    required
                    maxlength="3" class='modal-input-field'>
+                
+                <label for="add-degree-abbreviation">Degree Abbreviation:</label>
+                <input type="text" id="add-degree-abbreviation" name="degree-abbreviation" value=""
+                    required
+                    maxlength="15" class='modal-input-field'>
                 
                 <label for="add-degree-name">Degree Name:</label>
                 <input type="text" id="add-degree-name" name="degree-name" value=""
