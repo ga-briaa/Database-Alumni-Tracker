@@ -11,7 +11,6 @@ if (!isset($_SESSION['username']) || $_SESSION['username'] !== 'admin') {
 include '../../src/database-config.php';
 
 // --- FETCH DROPDOWN DATA ---
-
 // 1. Statuses
 $status_sql = "SELECT Status_ID, Status_Name FROM status ORDER BY Status_Name";
 $status_result = $conn->query($status_sql);
@@ -118,6 +117,7 @@ if ($alumni_result->num_rows > 0) {
                             <option value="college" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'college') echo 'selected'; ?>>College</option>
                             <option value="degree" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'degree') echo 'selected'; ?>>Degree</option>
                             <option value="status" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'status') echo 'selected'; ?>>Status</option>
+                            <option value="company" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'company') echo 'selected'; ?>>Company</option>
                         </select>
                     </form>
                 </div>
@@ -669,8 +669,13 @@ if ($alumni_result->num_rows > 0) {
                             <button class='myBtn btn-modal-trigger' data-target='addModal-status'>+ Add Data</button>
                         </div>
                     <?php
-                    }
+                    // --- 8. COMPANY MODAL ---
+                    } elseif ($selected_table == 'company') {
                     ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-company'>+ Add Data</button>
+                        </div>
+                    <?php } ?>
                 <?php } ?>
             </div>
 
@@ -693,6 +698,8 @@ if ($alumni_result->num_rows > 0) {
                         include 'tables/degree-view.php';
                     } elseif($selected_table == 'status') {
                         include 'tables/status-view.php';
+                    } elseif($selected_table == 'company') {
+                        include 'tables/company-view.php';
                     }
 
                     // --- PAGINATION ---
