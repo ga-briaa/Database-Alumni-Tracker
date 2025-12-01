@@ -95,10 +95,12 @@ document.addEventListener("DOMContentLoaded", function() {
       // 6. Handle Degree edit modal (NEW)
       else if (modalId === "editModal-degree") {
         const id = button.getAttribute("data-id");
+        const abbreviation = button.getAttribute("data-abbreviation");
         const name = button.getAttribute("data-name");
 
         if(modal.querySelector("#edit-degree-id")) modal.querySelector("#edit-degree-id").value = id;
         if(modal.querySelector("#edit-degree-old-id")) modal.querySelector("#edit-degree-old-id").value = id;
+        if(modal.querySelector("#edit-degree-abbreviation")) modal.querySelector("#edit-degree-abbreviation").value = abbreviation;
         if(modal.querySelector("#edit-degree-name")) modal.querySelector("#edit-degree-name").value = name;
       }
 

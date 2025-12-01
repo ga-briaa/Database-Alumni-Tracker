@@ -3,12 +3,13 @@ require_once '../../../src/database-config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Degree_ID = $_POST['degree-id'];
+    $Degree_Abbreviation = $_POST['degree-abbreviation'];
     $Degree_Name = $_POST['degree-name'];
 
-    $sql = "INSERT INTO degree (Degree_ID, Degree_Name) 
-            VALUES (?, ?)";
+    $sql = "INSERT INTO degree (Degree_ID, Degree_Abbreviation, Degree_Name) 
+            VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $Degree_ID, $Degree_Name);
+    $stmt->bind_param("sss", $Degree_ID, $Degree_Abbreviation, $Degree_Name);
 
     if ($stmt->execute()) {
         // Success
