@@ -25,7 +25,7 @@
     $filter_end_date = isset($_GET['end-date']) ? $_GET['end-date'] : '';
 
     // WHERE clause for search and filter
-    $sql_where= "";
+    $sql_where = "";
     $where_clauses = [];
     $params = [];
     $types = "";
