@@ -48,6 +48,20 @@
     font-size: 16px;
     font-family: 'Lexend', sans-serif;
     box-sizing: border-box;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-card input[type="text"]:hover,
+.section-card input[type="password"]:hover {
+    border-color: #f4a126;
+}
+
+.section-card input[type="text"]:focus,
+.section-card input[type="password"]:focus {
+    outline: none;
+    border-color: #8D1436;
+    box-shadow: 0 0 0 1px #8D1436;
 }
 
 .btn-selectors {
