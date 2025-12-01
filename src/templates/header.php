@@ -7,7 +7,7 @@
     </a>
     <div class="header-tabs">
         <a href="<?php echo BASE_URL; ?>index.php">Home</a>
-        <a href="<?php echo BASE_URL; ?>survey.php">Survey</a>
+        <!-- <a href="<?php echo BASE_URL; ?>survey.php">Survey</a> -->
 
         <!-- Check if user is logged in, show logout -->
         <?php if (isset($_SESSION['username'])) { ?>
