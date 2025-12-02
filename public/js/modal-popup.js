@@ -152,11 +152,30 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
+  // Handle URL parameters for displaying success, error, or duplicate modals
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('error') && urlParams.get('error') === 'duplicate') {
+    const duplicateIdErrorModal = document.getElementById('duplicateIdErrorModal');
+    if (duplicateIdErrorModal) {
+      duplicateIdErrorModal.style.display = 'flex';
+    }
+  }
+
   // Close modals
   closeButtons.forEach(button => {
     button.addEventListener("click", () => {
       const modal = button.closest(".modal");
-      if (modal) modal.style.display = "none";
+      if (modal) {
+        modal.style.display = "none";
+        // Remove URL parameters related to modal status if they exist
+        const newUrlParams = new URLSearchParams(window.location.search);
+        if (newUrlParams.has('add')) newUrlParams.delete('add');
+        if (newUrlParams.has('update')) newUrlParams.delete('update');
+        if (newUrlParams.has('error')) newUrlParams.delete('error');
+        if (newUrlParams.toString() !== urlParams.toString()) {
+          history.replaceState(null, '', window.location.pathname + (newUrlParams.toString() ? '?' + newUrlParams.toString() : ''));
+        }
+      }
     });
   });
 
@@ -164,6 +183,14 @@ document.addEventListener("DOMContentLoaded", function() {
   window.addEventListener("click", event => {
     if (event.target.classList.contains("modal")) {
       event.target.style.display = "none";
+      // Remove URL parameters related to modal status if they exist
+      const newUrlParams = new URLSearchParams(window.location.search);
+      if (newUrlParams.has('add')) newUrlParams.delete('add');
+      if (newUrlParams.has('update')) newUrlParams.delete('update');
+      if (newUrlParams.has('error')) newUrlParams.delete('error');
+      if (newUrlParams.toString() !== urlParams.toString()) {
+        history.replaceState(null, '', window.location.pathname + (newUrlParams.toString() ? '?' + newUrlParams.toString() : ''));
+      }
     }
   });
 

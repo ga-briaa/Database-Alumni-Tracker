@@ -765,3 +765,18 @@ if ($alumni_result->num_rows > 0) {
         <script src="<?php echo BASE_URL; ?>js/alum-id-validation.js"></script>
     </body>
 </html>
+<!-- Duplicate ID Error Modal -->
+<div class="modal" id="duplicateIdErrorModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Duplicate ID Entry</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>The ID you entered is already taken. Please use a different one.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-apply close">OK</button>
+        </div>
+    </div>
+</div>

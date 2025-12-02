@@ -6,7 +6,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Degree_Abbreviation = $_POST['degree-abbreviation'];
     $Degree_Name = $_POST['degree-name'];
 
-    $sql = "INSERT INTO degree (Degree_ID, Degree_Abbreviation, Degree_Name) 
+    // Check if Degree_ID already exists
+    $checkSql = "SELECT COUNT(*) FROM degree WHERE Degree_ID = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("s", $Degree_ID);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
+    $row = $result->fetch_row();
+    $checkStmt->close();
+
+    if ($row[0] > 0) {
+        // Duplicate ID found
+        header("Location: " . BASE_URL . "admin/database-manage.php?view-table=degree&error=duplicate");
+        exit();
+    }
+
+    $sql = "INSERT INTO degree (Degree_ID, Degree_Abbreviation, Degree_Name)
             VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sss", $Degree_ID, $Degree_Abbreviation, $Degree_Name);
@@ -16,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: " . BASE_URL . "admin/database-manage.php?view-table=degree&add=success");
     } else {
         // Error
-        echo "Error adding record: " . $stmt->error;
+        header("Location: " . BASE_URL . "admin/database-manage.php?view-table=degree&add=error");
+        // echo "Error adding record: " . $stmt->error; // For debugging
     }
 
     $stmt->close();
