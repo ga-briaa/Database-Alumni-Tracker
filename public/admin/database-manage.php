@@ -763,6 +763,7 @@ if ($alumni_result->num_rows > 0) {
         
         <script src="<?php echo BASE_URL; ?>js/modal-popup.js"></script>
         <script src="<?php echo BASE_URL; ?>js/alum-id-validation.js"></script>
+        <script src="<?php echo BASE_URL; ?>js/date-validation.js"></script>
     </body>
 </html>
 <!-- Duplicate ID Error Modal -->

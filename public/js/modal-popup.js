@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-grad-id")) modal.querySelector("#edit-grad-id").value = gradId;
       }
 
-      // 3. Handle Alumni Employment edit modal (NEW)
+      // 3. Handle Alumni Employment edit modal
       else if (modalId === "editModal-employment") {
         const empId = button.getAttribute("data-emp-id");
         const id = button.getAttribute("data-id");
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-program-college")) modal.querySelector("#edit-program-college").value = college;
       }
 
-      // 5. Handle College edit modal (NEW)
+      // 5. Handle College edit modal
       else if (modalId === "editModal-college") {
         const id = button.getAttribute("data-id");
         const name = button.getAttribute("data-name");
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-college-name")) modal.querySelector("#edit-college-name").value = name;
       }
 
-      // 6. Handle Degree edit modal (NEW)
+      // 6. Handle Degree edit modal
       else if (modalId === "editModal-degree") {
         const id = button.getAttribute("data-id");
         const abbreviation = button.getAttribute("data-abbreviation");
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-status-name")) modal.querySelector("#edit-status-name").value = name;
       }
 
-      // 8. Handle Company edit modal (NEW)
+      // 8. Handle Company edit modal
       else if (modalId === "editModal-company") {
         const id = button.getAttribute("data-id");
         const name = button.getAttribute("data-name");
