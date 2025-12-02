@@ -12,7 +12,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Error: Invalid ID format.");
     }   
 
-    $sql = "INSERT INTO alumni (Alum_ID, Alum_FirstName, Alum_LastName, Alum_ContactInfo, Status_ID) 
+    // Check if Alum_ID already exists
+    $checkSql = "SELECT COUNT(*) FROM alumni WHERE Alum_ID = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("s", $Alum_ID);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
+    $row = $result->fetch_row();
+    $checkStmt->close();
+
+    if ($row[0] > 0) {
+        // Duplicate ID found
+        header("Location: " . BASE_URL . "admin/database-manage.php?view-table=alumni-info&error=duplicate");
+        exit();
+    }
+
+    $sql = "INSERT INTO alumni (Alum_ID, Alum_FirstName, Alum_LastName, Alum_ContactInfo, Status_ID)
             VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssss", $Alum_ID, $Alum_FirstName, $Alum_LastName, $Alum_ContactInfo, $Status_ID);
@@ -20,9 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->execute()) {
         // Success
         header("Location: " . BASE_URL . "admin/database-manage.php?view-table=alumni-info&add=success");
+        exit();
     } else {
         // Error
-        echo "Error adding record: " . $stmt->error;
+        header("Location: " . BASE_URL . "admin/database-manage.php?view-table=alumni-info&add=error");
+        exit();
+        // echo "Error adding record: " . $stmt->error; // For debugging
     }
 
     $stmt->close();
