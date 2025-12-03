@@ -130,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const region = button.getAttribute("data-region");
         const city = button.getAttribute("data-city");
 
-        if(modal.querySelector("#edit-location-id")) modal.querySelector("#edit-location-id").value = id;
         if(modal.querySelector("#edit-location-old-id")) modal.querySelector("#edit-location-old-id").value = id;
         if(modal.querySelector("#edit-location-country")) modal.querySelector("#edit-location-country").value = country;
         if(modal.querySelector("#edit-location-region")) modal.querySelector("#edit-location-region").value = region;

@@ -9,7 +9,7 @@ $allowed_columns = [
     'city' => 'City',
 ];
 
-$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'id';
+$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'country';
 $sort_column = $allowed_columns[$sort_column_key];
 $sort_order = isset($_GET['order']) && strtolower($_GET['order']) == 'desc' ? 'DESC' : 'ASC';
 
@@ -24,13 +24,12 @@ $search_param_types = "";
 
 if (!empty($search_term)) {
     $search_like = "%" . $search_term . "%";
-    $search_sql = " WHERE (Location_ID LIKE ? 
-                      OR Country LIKE ?
+    $search_sql = " WHERE (Country LIKE ?
                       OR Region LIKE ?
                       OR City LIKE ?)";
     
-    $search_params = [$search_like, $search_like, $search_like, $search_like];
-    $search_param_types = "ssss";
+    $search_params = [$search_like, $search_like, $search_like];
+    $search_param_types = "sss";
 }
 
 $countSql = "SELECT COUNT(*) FROM location" . $search_sql;
@@ -75,15 +74,9 @@ if($result->num_rows > 0) {
 ?>
     <table>
             <tr>
-                <th colspan='5' class='table-header'>Location Information</th>
+                <th colspan='4' class='table-header'>Location Information</th>
             </tr>
             <tr>
-                <th>
-                    <a href='<?php echo "$current_table_url&sort=id&order=" . (($sort_column_key == 'id') ? $next_order : 'ASC') . $search_url_param; ?>'
-                    class='<?php if($sort_column_key == 'id') echo "active-sort $sort_order"; ?>'>
-                    ID
-                    </a>
-                </th>
                 <th>
                     <a href='<?php echo "$current_table_url&sort=country&order=" . (($sort_column_key == 'country') ? $next_order : 'ASC') . $search_url_param; ?>'
                     class='<?php if($sort_column_key == 'country') echo "active-sort $sort_order"; ?>'>
@@ -107,7 +100,6 @@ if($result->num_rows > 0) {
     <?php
     while($row = $result->fetch_assoc()) {
         echo "<tr>
-                <td>" . htmlspecialchars($row['Location_ID']) . "</td>
                 <td>" . htmlspecialchars($row['Country']) . "</td>
                 <td>" . htmlspecialchars($row['Region']) . "</td>
                 <td>" . htmlspecialchars($row['City']) . "</td>
@@ -154,10 +146,6 @@ if($result->num_rows > 0) {
             <div class="modal-body modal-form-grid">
                 <input type="hidden" id="edit-location-old-id" name="location-old-id" value="">
                 
-                <label for="edit-location-id">Location ID:</label>
-                <input type="number" step="1" min="1" max="999" id="edit-location-id" name="location-id" value=""
-                   required class='modal-input-field'>
-                
                 <label for="edit-location-country">Country:</label>
                 <input type="text" id="edit-location-country" name="location-country" value=""
                     required
@@ -168,7 +156,7 @@ if($result->num_rows > 0) {
                     required
                     maxlength="50" class='modal-input-field'>
                 
-                ,<label for="edit-location-city">City:</label>
+                <label for="edit-location-city">City:</label>
                 <input type="text" id="edit-location-city" name="location-city" value=""
                     required
                     maxlength="50" class='modal-input-field'>
@@ -188,10 +176,6 @@ if($result->num_rows > 0) {
         </div>
         <form id="add-location-form" action="<?php echo BASE_URL; ?>admin/data/add-location.php" method="POST">
             <div class="modal-body modal-form-grid">
-                <label for="add-location-id">Location ID:</label>
-                <input type="number" step="1" min="1" max="999" id="add-location-id" name="location-id" value=""
-                   required class='modal-input-field'>
-                
                 <label for="add-location-country">Country:</label>
                 <input type="text" id="add-location-country" name="location-country" value=""
                     required
