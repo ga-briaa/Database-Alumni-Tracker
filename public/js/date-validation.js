@@ -4,18 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function validateDateRange(startInput, endInput) {
         if (!startInput || !endInput) return;
 
-        // Keep the 'max' limit to today
         startInput.setAttribute('max', today);
         endInput.setAttribute('max', today);
 
-        // --- REMOVED THE 'MIN' ATTRIBUTE LOGIC HERE ---
-        // This allows the user to select an end date earlier than the start date
-        // in the UI without it being greyed out.
-
-        // Check if logic is invalid and trigger native popup
         if (startInput.value && endInput.value && startInput.value > endInput.value) {
-            // Updated the message as requested
-            endInput.setCustomValidity("Start Date cannot be later than End Date.");
+            endInput.setCustomValidity("End Date cannot be earlier than Start Date.");
             endInput.reportValidity(); 
         } else {
             endInput.setCustomValidity("");

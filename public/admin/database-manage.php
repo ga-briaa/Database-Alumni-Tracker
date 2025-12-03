@@ -118,6 +118,7 @@ if ($alumni_result->num_rows > 0) {
                             <option value="degree" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'degree') echo 'selected'; ?>>Degree</option>
                             <option value="status" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'status') echo 'selected'; ?>>Status</option>
                             <option value="company" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'company') echo 'selected'; ?>>Company</option>
+                            <option value="location" <?php if(isset($_GET['view-table']) && $_GET['view-table'] == 'location') echo 'selected'; ?>>Location</option>
                         </select>
                     </form>
                 </div>
@@ -675,6 +676,11 @@ if ($alumni_result->num_rows > 0) {
                         <div class='add-data'>
                             <button class='myBtn btn-modal-trigger' data-target='addModal-company'>+ Add Data</button>
                         </div>
+                    <?php } elseif ($selected_table == 'location') { 
+                    ?>
+                        <div class='add-data'>
+                            <button class='myBtn btn-modal-trigger' data-target='addModal-location'>+ Add Data</button>
+                        </div>
                     <?php } ?>
                 <?php } ?>
             </div>
@@ -700,6 +706,8 @@ if ($alumni_result->num_rows > 0) {
                         include 'tables/status-view.php';
                     } elseif($selected_table == 'company') {
                         include 'tables/company-view.php';
+                    } elseif($selected_table == 'location') {
+                        include 'tables/location-view.php';
                     }
 
                     // --- PAGINATION ---
