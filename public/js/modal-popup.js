@@ -124,6 +124,19 @@ document.addEventListener("DOMContentLoaded", function() {
         if(modal.querySelector("#edit-company-name")) modal.querySelector("#edit-company-name").value = name;
       }
 
+      else if (modalId === "editModal-location") {
+        const id = button.getAttribute("data-id");
+        const country = button.getAttribute("data-country");
+        const region = button.getAttribute("data-region");
+        const city = button.getAttribute("data-city");
+
+        if(modal.querySelector("#edit-location-id")) modal.querySelector("#edit-location-id").value = id;
+        if(modal.querySelector("#edit-location-old-id")) modal.querySelector("#edit-location-old-id").value = id;
+        if(modal.querySelector("#edit-location-country")) modal.querySelector("#edit-location-country").value = country;
+        if(modal.querySelector("#edit-location-region")) modal.querySelector("#edit-location-region").value = region;
+        if(modal.querySelector("#edit-location-city")) modal.querySelector("#edit-location-city").value = city;
+      }
+
       // Handle Delete modal (for info, courses, employment, program, college, degree, status, AND company)
       else if (modalId === "deleteModal") {
         const idToDelete = button.getAttribute("data-id"); // General ID for deletion
@@ -144,6 +157,8 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.querySelector("#delete-status-id").value = idToDelete;
         } else if (modal.querySelector("#delete-company-id") && idToDelete) {
             modal.querySelector("#delete-company-id").value = idToDelete;
+        } else if (modal.querySelector("#delete-location-id") && idToDelete) {
+            modal.querySelector("#delete-location-id").value = idToDelete;
         }
       }
 
