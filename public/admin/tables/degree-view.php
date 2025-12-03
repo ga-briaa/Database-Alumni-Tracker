@@ -8,7 +8,7 @@ $allowed_columns = [
     'name' => 'Degree_Name'
 ];
 
-$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'name';
+$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'id';
 $sort_column = $allowed_columns[$sort_column_key];
 $sort_order = isset($_GET['order']) && strtolower($_GET['order']) == 'desc' ? 'DESC' : 'ASC';
 
