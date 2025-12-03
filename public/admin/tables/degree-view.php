@@ -147,7 +147,7 @@ if($result->num_rows > 0) {
                 <input type="hidden" id="edit-degree-old-id" name="degree-old-id" value="">
                 
                 <label for="edit-degree-id">Degree ID:</label>
-                <input type="text" id="edit-degree-id" name="degree-id" value=""
+                <input type="number" step="1" min="1" max="999" id="edit-degree-id" name="degree-id" value=""
                    required
                    maxlength="3" class='modal-input-field'>
                 
@@ -177,7 +177,7 @@ if($result->num_rows > 0) {
         <form id="add-degree-form" action="<?php echo BASE_URL; ?>admin/data/add-degree.php" method="POST">
             <div class="modal-body modal-form-grid">
                 <label for="add-degree-id">Degree ID:</label>
-                <input type="text" id="add-degree-id" name="degree-id" value=""
+                <input type="number" step="1" min="1" max="999" id="add-degree-id" name="degree-id" value=""
                    required
                    maxlength="3" class='modal-input-field'>
                 
