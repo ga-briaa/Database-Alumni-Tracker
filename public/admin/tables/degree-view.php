@@ -8,7 +8,7 @@ $allowed_columns = [
     'name' => 'Degree_Name'
 ];
 
-$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'id';
+$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'abbreviation';
 $sort_column = $allowed_columns[$sort_column_key];
 $sort_order = isset($_GET['order']) && strtolower($_GET['order']) == 'desc' ? 'DESC' : 'ASC';
 
@@ -77,13 +77,6 @@ if($result->num_rows > 0) {
             </tr>
             <tr>
                 <th>
-                    <a href='<?php echo "$current_table_url&sort=id&order=" . (($sort_column_key == 'id') ? $next_order : 'ASC') . $search_url_param; ?>'
-                    class='<?php if($sort_column_key == 'id') echo "active-sort $sort_order"; ?>'>
-                    ID
-                    </a>
-                </th>
-
-                <th>
                     <a href='<?php echo "$current_table_url&sort=abbreviation&order=" . (($sort_column_key == 'abbreviation') ? $next_order : 'ASC') . $search_url_param; ?>'
                     class='<?php if($sort_column_key == 'abbreviation') echo "active-sort $sort_order"; ?>'>
                     Degree Abbreviation
@@ -101,7 +94,6 @@ if($result->num_rows > 0) {
     <?php
     while($row = $result->fetch_assoc()) {
         echo "<tr>
-                <td>" . htmlspecialchars($row['Degree_ID']) . "</td>
                 <td>" . htmlspecialchars($row['Degree_Abbreviation']) . "</td>
                 <td>" . htmlspecialchars($row['Degree_Name']) . "</td>
                 <td class='manage-icon-cell'>
@@ -146,11 +138,6 @@ if($result->num_rows > 0) {
             <div class="modal-body modal-form-grid">
                 <input type="hidden" id="edit-degree-old-id" name="degree-old-id" value="">
                 
-                <label for="edit-degree-id">Degree ID:</label>
-                <input type="number" step="1" min="1" max="999" id="edit-degree-id" name="degree-id" value=""
-                   required
-                   maxlength="3" class='modal-input-field'>
-                
                 <label for="edit-degree-abbreviation">Degree Abbreviation:</label>
                 <input type="text" id="edit-degree-abbreviation" name="degree-abbreviation" value=""
                     required
@@ -175,12 +162,7 @@ if($result->num_rows > 0) {
             <span class="close">&times;</span>
         </div>
         <form id="add-degree-form" action="<?php echo BASE_URL; ?>admin/data/add-degree.php" method="POST">
-            <div class="modal-body modal-form-grid">
-                <label for="add-degree-id">Degree ID:</label>
-                <input type="number" step="1" min="1" max="999" id="add-degree-id" name="degree-id" value=""
-                   required
-                   maxlength="3" class='modal-input-field'>
-                
+            <div class="modal-body modal-form-grid">                
                 <label for="add-degree-abbreviation">Degree Abbreviation:</label>
                 <input type="text" id="add-degree-abbreviation" name="degree-abbreviation" value=""
                     required

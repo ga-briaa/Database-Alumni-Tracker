@@ -7,7 +7,7 @@ $allowed_columns = [
     'name' => 'Company_Name'
 ];
 
-$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'id';
+$sort_column_key = isset($_GET['sort']) && array_key_exists($_GET['sort'], $allowed_columns) ? $_GET['sort'] : 'name';
 $sort_column = $allowed_columns[$sort_column_key];
 $sort_order = isset($_GET['order']) && strtolower($_GET['order']) == 'desc' ? 'DESC' : 'ASC';
 
@@ -75,12 +75,6 @@ if($result->num_rows > 0) {
             </tr>
             <tr>
                 <th>
-                    <a href='<?php echo "$current_table_url&sort=id&order=" . (($sort_column_key == 'id') ? $next_order : 'ASC') . $search_url_param; ?>'
-                    class='<?php if($sort_column_key == 'id') echo "active-sort $sort_order"; ?>'>
-                    ID
-                    </a>
-                </th>
-                <th>
                     <a href='<?php echo "$current_table_url&sort=name&order=" . (($sort_column_key == 'name') ? $next_order : 'ASC') . $search_url_param; ?>'
                     class='<?php if($sort_column_key == 'name') echo "active-sort $sort_order"; ?>'>
                     Company Name
@@ -91,7 +85,6 @@ if($result->num_rows > 0) {
     <?php
     while($row = $result->fetch_assoc()) {
         echo "<tr>
-                <td>" . htmlspecialchars($row['Company_ID']) . "</td>
                 <td>" . htmlspecialchars($row['Company_Name']) . "</td>
                 <td class='manage-icon-cell'>
         
@@ -134,10 +127,6 @@ if($result->num_rows > 0) {
             <div class="modal-body modal-form-grid">
                 <input type="hidden" id="edit-company-old-id" name="company-old-id" value="">
                 
-                <label for="edit-company-id">Company ID:</label>
-                <input type="number" step="1" min="1" max="999" id="edit-company-id" name="company-id" value=""
-                   required class='modal-input-field'>
-                
                 <label for="edit-company-name">Company Name:</label>
                 <input type="text" id="edit-company-name" name="company-name" value=""
                     required
@@ -157,11 +146,7 @@ if($result->num_rows > 0) {
             <span class="close">&times;</span>
         </div>
         <form id="add-company-form" action="<?php echo BASE_URL; ?>admin/data/add-company.php" method="POST">
-            <div class="modal-body modal-form-grid">
-                <label for="add-company-id">Company ID:</label>
-                <input type="number" step="1" min="1" max="999" id="add-company-id" name="company-id" value=""
-                   required class='modal-input-field'>
-                
+            <div class="modal-body modal-form-grid">                
                 <label for="add-company-name">Company Name:</label>
                 <input type="text" id="add-company-name" name="company-name" value=""
                     required
